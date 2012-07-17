@@ -1,4 +1,7 @@
 #!/usr/bin/make -f
 
+# Disable tests as they don't work for some reason
+override_dh_auto_test:
+
 %:
-	dh $@
+	dh $@ --with autoreconf

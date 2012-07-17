@@ -4,19 +4,21 @@ Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Robert Ancell <robert.ancell@canonical.com>
 Build-Depends: debhelper (>= 9),
+               dh-autoreconf,
                intltool (>= 0.35.0),
                libglib2.0-dev (>= 2.31.0),
                libgcrypt11-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
                gobject-introspection (>= 1.29),
-               gir1.2-glib-2.0
+               gir1.2-glib-2.0,
+               valac-0.18 (>= 0.17.2.12)
 Standards-Version: 3.9.3
 
-Package: libsecret-dev
+Package: libsecret-1-dev
 Architecture: any
 Section: libdevel
-Depends: libsecret0 (= ${binary:Version}),
-         gir1.2-secret-0 (= ${binary:Version}),
+Depends: libsecret-1-0 (= ${binary:Version}),
+         gir1.2-secret-1 (= ${binary:Version}),
          ${misc:Depends}
 Description: Secret store (development files)
  Library for storing and retrieving passwords and other secrets.
@@ -24,13 +26,12 @@ Description: Secret store (development files)
  .
  This package contains the development files.
 
-Package: libsecret0
+Package: libsecret-1-0
 Section: libs
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
-         ${shlibs:Depends},
-         libsecret-common
+         ${shlibs:Depends}
 Description: Secret store
  Library for storing and retrieving passwords and other secrets.
  It communicates with the "Secret Service" using DBus.
@@ -43,17 +44,7 @@ Depends: ${shlibs:Depends},
 Description: Tools for accessing secret store
  Provides tools for accessing the secret store.
 
-Package: libsecret-common
-Section: libs
-Architecture: all
-Depends: ${misc:Depends}
-Description: Secret Store (common files)
- Library for storing and retrieving passwords and other secrets.
- It communicates with the "Secret Service" using DBus.
- .
- This package contains common files, such as translations and icons.
-
-Package: gir1.2-secret-0
+Package: gir1.2-secret-1
 Section: introspection
 Architecture: any
 Depends: ${gir:Depends},
