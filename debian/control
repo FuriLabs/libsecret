@@ -31,10 +31,21 @@ Section: libs
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
-         ${shlibs:Depends}
+         ${shlibs:Depends},
+         libsecret-common
 Description: Secret store
  Library for storing and retrieving passwords and other secrets.
  It communicates with the "Secret Service" using DBus.
+
+Package: libsecret-common
+Section: libs
+Architecture: all
+Depends: ${misc:Depends}
+Description: Secret store
+ Library for storing and retrieving passwords and other secrets.
+ It communicates with the "Secret Service" using DBus.
+ .
+ This package contains data files used by the libsecret library.
 
 Package: libsecret-tools
 Section: admin
