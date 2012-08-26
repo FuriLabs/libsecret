@@ -5,7 +5,7 @@ include /usr/share/gnome-pkg-tools/1/rules/uploaders.mk
 
 # Disable tests as they don't work for some reason
 override_dh_auto_test:
-	dbus-test-runner -t make -p check || true
+	make -p check || true
 
 %:
 	dh $@ --with autoreconf,gir
