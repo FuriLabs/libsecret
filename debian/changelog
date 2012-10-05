@@ -1,8 +1,8 @@
-libsecret (0.9-1) UNRELEASED; urgency=low
+libsecret (0.10-1) experimental; urgency=low
 
   * Upload to Debian
 
- -- Sjoerd Simons <sjoerd@debian.org>  Sun, 26 Aug 2012 13:26:38 +0200
+ -- Sjoerd Simons <sjoerd@debian.org>  Fri, 05 Oct 2012 20:59:47 +0200
 
 libsecret (0.9-0ubuntu3) quantal; urgency=low
 
