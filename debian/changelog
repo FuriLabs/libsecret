@@ -1,4 +1,4 @@
-libsecret (0.11-2) experimental; urgency=low
+libsecret (0.11-2) UNRELEASED; urgency=low
 
   * debian/control:
     - Add multiarch annotations and pre-depends
