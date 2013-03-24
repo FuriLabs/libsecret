@@ -1,3 +1,9 @@
+libsecret (0.15-1) experimental; urgency=low
+
+  * New upstream release.
+
+ -- Andreas Henriksson <andreas@fatal.se>  Sun, 24 Mar 2013 13:27:34 +0100
+
 libsecret (0.14-1) experimental; urgency=low
 
   [ Rico Tzschichholz ]
