@@ -25,7 +25,7 @@ Depends: libsecret-1-0 (= ${binary:Version}),
          gir1.2-secret-1 (= ${binary:Version}),
          libglib2.0-dev,
          ${misc:Depends}
-Pre-Depends: dpkg (>= 1.15.6)
+Pre-Depends: ${misc:Pre-Depends}
 Description: Secret store (development files)
  Library for storing and retrieving passwords and other secrets.
  It communicates with the "Secret Service" using DBus.
@@ -38,7 +38,7 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          libsecret-common
-Pre-Depends: dpkg (>= 1.15.6), ${misc:Pre-Depends}
+Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Secret store
  Library for storing and retrieving passwords and other secrets.
@@ -48,7 +48,7 @@ Package: libsecret-common
 Section: libs
 Architecture: all
 Depends: ${misc:Depends}
-Pre-Depends: dpkg (>= 1.15.6)
+Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: Secret store (common files)
  Library for storing and retrieving passwords and other secrets.
@@ -61,7 +61,7 @@ Section: admin
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends}
-Pre-Depends: dpkg (>= 1.15.6)
+Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: Tools for accessing secret store
  Provides tools for accessing the secret store.
