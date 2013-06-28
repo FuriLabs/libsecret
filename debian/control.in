@@ -18,7 +18,7 @@ Build-Depends: debhelper (>= 9),
 Standards-Version: 3.9.4
 Vcs-Svn: svn://anonscm.debian.org/svn/pkg-gnome/desktop/unstable/libsecret
 Vcs-Browser: http://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/libsecret/
-Homepage: https://live.gnome.org/Libsecret
+Homepage: https://wiki.gnome.org/Libsecret
 
 Package: libsecret-1-dev
 Architecture: any

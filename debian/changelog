@@ -2,6 +2,7 @@ libsecret (0.15-3) UNRELEASED; urgency=low
 
   * debian/rules:
     - Build with --disable-silent-rules for a useful build log
+  * Update homepage
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 24 May 2013 18:40:30 -0400
 
