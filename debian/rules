@@ -3,10 +3,6 @@
 include /usr/share/gnome-pkg-tools/1/rules/uploaders.mk
 -include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
 
-# Disable tests as they don't work for some reason
-override_dh_auto_test:
-	make -p check || true
-
 %:
 	dh $@ --with autoreconf,gir
 
@@ -16,3 +12,8 @@ override_dh_auto_configure:
 override_dh_install:
 	find debian/tmp/usr/lib -name *.la -delete
 	dh_install --fail-missing
+
+# Disable tests as they don't work for some reason
+override_dh_auto_test:
+	make -p check || true
+
