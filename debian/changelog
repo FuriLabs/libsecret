@@ -1,8 +1,12 @@
-libsecret (0.15-3) UNRELEASED; urgency=low
+libsecret (0.16-1) UNRELEASED; urgency=low
 
+  [ Jeremy Bicha ]
   * debian/rules:
     - Build with --disable-silent-rules for a useful build log
   * Update homepage
+
+  [ Michael Biebl ]
+  * New upstream release.
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 24 May 2013 18:40:30 -0400
 
