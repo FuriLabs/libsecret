@@ -7,6 +7,7 @@ libsecret (0.16-1) UNRELEASED; urgency=low
 
   [ Michael Biebl ]
   * New upstream release.
+  * Refresh patches.
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 24 May 2013 18:40:30 -0400
 

@@ -1,8 +1,8 @@
-diff --git a/libsecret/Makefile.am b/libsecret/Makefile.am
-index 46727d7..8436792 100644
---- a/libsecret/Makefile.am
-+++ b/libsecret/Makefile.am
-@@ -134,10 +134,10 @@ SecretUnstable_0_gir_CFLAGS = -I$(top_srcdir) -I$(top_builddir) -DSECRET_COMPILA
+Index: libsecret-0.16/libsecret/Makefile.am
+===================================================================
+--- libsecret-0.16.orig/libsecret/Makefile.am	2013-09-17 02:24:00.396584851 +0200
++++ libsecret-0.16/libsecret/Makefile.am	2013-09-17 02:24:00.392584788 +0200
+@@ -138,10 +138,10 @@
  SecretUnstable_0_gir_FILES = $(UNSTABLE_FILES)
  SecretUnstable_0_gir_SCANNERFLAGS = --c-include "libsecret/secret.h" --identifier-prefix=Secret --symbol-prefix=secret --include-uninstalled=$(builddir)/Secret-@SECRET_MAJOR@.gir
  
