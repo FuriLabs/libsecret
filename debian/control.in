@@ -65,8 +65,10 @@ Depends: ${shlibs:Depends},
          ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
-Description: Tools for accessing secret store
- Provides tools for accessing the secret store.
+Description: tool for storing and retrieving GObject passwords
+ This package provides a command line tool using libsecret to access
+ the freedesktop.org Secret Service API. This can be used to store
+ and retrieve passwords for desktop applications.
 
 Package: gir1.2-secret-1
 Section: introspection

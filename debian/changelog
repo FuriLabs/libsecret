@@ -9,7 +9,11 @@ libsecret (0.16-1) UNRELEASED; urgency=low
   * New upstream release.
   * Refresh patches.
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 24 May 2013 18:40:30 -0400
+  [ Jackson Doak ]
+  * debian/control:
+    - Improve description of libsecret-tools. Closes: #711475
+
+ -- Jackson Doak <noskcaj@ubuntu.com>  Mon, 09 Dec 2013 07:48:29 +1100
 
 libsecret (0.15-2) unstable; urgency=low
 
