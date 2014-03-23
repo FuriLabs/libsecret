@@ -1,4 +1,4 @@
-libsecret (0.16-1) UNRELEASED; urgency=low
+libsecret (0.18-1) unstable; urgency=low
 
   [ Jeremy Bicha ]
   * debian/rules:
@@ -6,14 +6,32 @@ libsecret (0.16-1) UNRELEASED; urgency=low
   * Update homepage
 
   [ Michael Biebl ]
-  * New upstream release.
+  * New upstream release (0.16).
   * Refresh patches.
 
   [ Jackson Doak ]
   * debian/control:
     - Improve description of libsecret-tools. Closes: #711475
 
- -- Jackson Doak <noskcaj@ubuntu.com>  Mon, 09 Dec 2013 07:48:29 +1100
+  [ Andreas Henriksson ]
+  * New upstream release (0.18)
+  * Bump glib build-dependency to >= 2.38.0 according to configure.ac
+  * Drop debian/patches, both patches obsolete.
+    - debian/patches/dont_run_gjs_tests.patch
+    - debian/patches/introspection-dir.patch
+  * Bump Standards-Version to 3.9.5
+  * Update debian/libsecret-1-0.symbols
+    - Missing secret_service_new* symbols...
+    - See https://git.gnome.org/browse/libsecret/commit/?id=1758194f26a41
+    - "The _new() suffix confuses vala and gobject introspection [...]
+       This is an API/API break, but its to the portion of the library
+       marked as unstable. [...]"
+    - Also adds several new symbols
+  * Add "Breaks: libsecret (<< 3.12)" to libsecret-1-0 to handle above.
+  * Install Secret g-i typelib file from multiarch path.
+  * debian/rules: quote the wildcard argument of find to avoid premature exp.
+
+ -- Andreas Henriksson <andreas@fatal.se>  Sun, 23 Mar 2014 20:43:29 +0100
 
 libsecret (0.15-2) unstable; urgency=low
 

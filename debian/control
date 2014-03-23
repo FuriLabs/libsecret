@@ -11,7 +11,7 @@ Uploaders: Andreas Henriksson <andreas@fatal.se>, Jeremy Bicha <jbicha@ubuntu.co
 Build-Depends: debhelper (>= 9),
                dh-autoreconf,
                intltool (>= 0.35.0),
-               libglib2.0-dev (>= 2.31.0),
+               libglib2.0-dev (>= 2.38.0),
                libgcrypt11-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
                gobject-introspection (>= 1.29),
@@ -20,7 +20,7 @@ Build-Depends: debhelper (>= 9),
                python-dbus,
                python-gobject,
                gnome-pkg-tools
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/libsecret
 Vcs-Browser: http://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/libsecret/
 Homepage: https://wiki.gnome.org/Libsecret
@@ -45,6 +45,7 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          libsecret-common
+Breaks: seahorse (<< 3.12)
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Secret store

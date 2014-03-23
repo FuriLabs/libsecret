@@ -10,7 +10,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- --disable-silent-rules
 
 override_dh_install:
-	find debian/tmp/usr/lib -name *.la -delete
+	find debian/tmp/usr/lib -name '*.la' -delete
 	dh_install --fail-missing
 
 # Disable tests as they don't work for some reason
