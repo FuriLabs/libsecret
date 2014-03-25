@@ -7,7 +7,7 @@ Source: libsecret
 Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Andreas Henriksson <andreas@fatal.se>, Jeremy Bicha <jbicha@ubuntu.com>, Michael Biebl <biebl@debian.org>, Sebastien Bacher <seb128@debian.org>, Sjoerd Simons <sjoerd@debian.org>
+Uploaders: Andreas Henriksson <andreas@fatal.se>, Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Michael Biebl <biebl@debian.org>, Sjoerd Simons <sjoerd@debian.org>
 Build-Depends: debhelper (>= 9),
                dh-autoreconf,
                intltool (>= 0.35.0),
@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 9),
                libgcrypt11-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
                gobject-introspection (>= 1.29),
-               gtk-doc-tools,
+               gtk-doc-tools (>= 1.9),
                valac (>= 0.17.2.12),
                python-dbus,
                python-gobject,
