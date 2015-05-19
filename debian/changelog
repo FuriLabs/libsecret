@@ -1,4 +1,4 @@
-libsecret (0.18.2-1) UNRELEASED; urgency=medium
+libsecret (0.18.2-1) unstable; urgency=medium
 
   [ Laurent Bigonville ]
   * debian/control.in: Bump gtk-doc-tools build-dep to >= 1.9
@@ -15,7 +15,7 @@ libsecret (0.18.2-1) UNRELEASED; urgency=medium
   * Bump Standards-Version to 3.9.6. No further changes.
   * Fix invalid short name for BSD license in debian/copyright.
 
- -- Laurent Bigonville <bigon@debian.org>  Tue, 25 Mar 2014 11:16:03 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 20 May 2015 01:22:33 +0200
 
 libsecret (0.18-1) unstable; urgency=low
 
