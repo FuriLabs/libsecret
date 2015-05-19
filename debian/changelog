@@ -41,7 +41,7 @@ libsecret (0.18-1) unstable; urgency=low
        This is an API/API break, but its to the portion of the library
        marked as unstable. [...]"
     - Also adds several new symbols
-  * Add "Breaks: libsecret (<< 3.12)" to libsecret-1-0 to handle above.
+  * Add "Breaks: seahorse (<< 3.12)" to libsecret-1-0 to handle above.
   * Install Secret g-i typelib file from multiarch path.
   * debian/rules: quote the wildcard argument of find to avoid premature exp.
 
