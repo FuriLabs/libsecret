@@ -13,6 +13,7 @@ libsecret (0.18.2-1) UNRELEASED; urgency=medium
   * Mark gir and dev packages as Multi-Arch: same.
   * Update Homepage: URL.
   * Bump Standards-Version to 3.9.6. No further changes.
+  * Fix invalid short name for BSD license in debian/copyright.
 
  -- Laurent Bigonville <bigon@debian.org>  Tue, 25 Mar 2014 11:16:03 +0100
 
