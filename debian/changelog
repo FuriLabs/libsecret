@@ -11,6 +11,7 @@ libsecret (0.18.2-1) UNRELEASED; urgency=medium
   * New upstream release.
   * Install typelib files into multiarch paths.
   * Mark gir and dev packages as Multi-Arch: same.
+  * Update Homepage: URL.
 
  -- Laurent Bigonville <bigon@debian.org>  Tue, 25 Mar 2014 11:16:03 +0100
 
