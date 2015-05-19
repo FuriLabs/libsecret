@@ -9,6 +9,7 @@ libsecret (0.18.2-1) UNRELEASED; urgency=medium
 
   [ Michael Biebl ]
   * New upstream release.
+  * Install typelib files into multiarch paths.
 
  -- Laurent Bigonville <bigon@debian.org>  Tue, 25 Mar 2014 11:16:03 +0100
 
