@@ -1,6 +1,12 @@
 libsecret (0.18.4-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Run test suite during build
+    - Add Build-Depends on dbus on gjs.
+    - Use dbus-run-session to run the test suite as some of the tests require
+      a D-Bus session.
+    - Unset LD_PRELOAD when running the test suite as most tests fail when run
+      under fakeroot.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 25 Jan 2016 00:08:35 +0100
 
