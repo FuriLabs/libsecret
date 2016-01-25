@@ -2,7 +2,7 @@ libsecret (0.18.4-1) unstable; urgency=medium
 
   * New upstream release.
   * Run test suite during build
-    - Add Build-Depends on dbus on gjs.
+    - Add Build-Depends on dbus and gjs.
     - Use dbus-run-session to run the test suite as some of the tests require
       a D-Bus session.
     - Unset LD_PRELOAD when running the test suite as most tests fail when run
