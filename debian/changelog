@@ -7,6 +7,7 @@ libsecret (0.18.5-1) UNRELEASED; urgency=medium
   * Replace Build-Depends on python-dbus and python-gobject with python3-dbus
     and python3-gi following the upstream port to Python 3 and modern
     pygobject.
+  * Port remaining tests to Python 3. Patches cherry-picked from upstream Git.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 06 Apr 2016 01:05:43 +0200
 

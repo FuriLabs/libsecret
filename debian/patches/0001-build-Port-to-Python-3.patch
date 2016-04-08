@@ -1,0 +1,146 @@
+From 9f912d33b534727a0eb312f760e6c59124cc81f9 Mon Sep 17 00:00:00 2001
+From: Dmitry Shachnev <mitya57@gmail.com>
+Date: Wed, 6 Apr 2016 10:37:38 +0200
+Subject: [PATCH 1/2] build: Port to Python 3
+
+https://bugzilla.gnome.org/show_bug.cgi?id=687637
+---
+ build/tap-driver   |  8 ++++----
+ build/tap-gtester  | 28 ++++++++++++++--------------
+ build/tap-unittest |  2 +-
+ 3 files changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/build/tap-driver b/build/tap-driver
+index 96fd219..07f2835 100755
+--- a/build/tap-driver
++++ b/build/tap-driver
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # Copyright (C) 2013 Red Hat, Inc.
+ #
+@@ -102,7 +102,7 @@ class Driver:
+             proc = subprocess.Popen(self.argv, close_fds=True,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+-        except OSError, ex:
++        except OSError as ex:
+             self.report_error("Couldn't run %s: %s" % (self.argv[0], str(ex)))
+             return
+ 
+@@ -112,13 +112,13 @@ class Driver:
+         while len(rset) > 0:
+             ret = select.select(rset, [], [], 10)
+             if outf in ret[0]:
+-                data = os.read(outf, 1024)
++                data = os.read(outf, 1024).decode("utf-8")
+                 if data == "":
+                     rset.remove(outf)
+                 self.log.write(data)
+                 self.process(data)
+             if errf in ret[0]:
+-                data = os.read(errf, 1024)
++                data = os.read(errf, 1024).decode("utf-8")
+                 if data == "":
+                     rset.remove(errf)
+                 self.log.write(data)
+diff --git a/build/tap-gtester b/build/tap-gtester
+index 881046a..e169cb8 100755
+--- a/build/tap-gtester
++++ b/build/tap-gtester
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ # Copyright (C) 2014 Red Hat, Inc.
+ #
+@@ -42,7 +42,7 @@ class NullCompiler:
+ 
+     def process(self, proc):
+         while True:
+-            line = proc.stdout.readline()
++            line = proc.stdout.readline().decode("utf-8")
+             if not line:
+                 break
+             self.input(line)
+@@ -75,27 +75,27 @@ class GTestCompiler(NullCompiler):
+                self.test_num += 1
+            elif cmd == "result":
+                if data == "OK":
+-                   print "ok %d %s" % (self.test_num, self.test_name)
++                   print("ok %d %s" % (self.test_num, self.test_name))
+                if data == "FAIL":
+-                   print "not ok %d %s", (self.test_num, self.test_name)
++                   print("not ok %d %s", (self.test_num, self.test_name))
+                self.test_name = None
+            elif cmd == "skipping":
+                if "/subprocess" not in data:
+-                   print "ok %d # skip -- %s" % (self.test_num, data)
++                   print("ok %d # skip -- %s" % (self.test_num, data))
+                self.test_name = None
+            elif data:
+-               print "# %s: %s" % (cmd, data)
++               print("# %s: %s" % (cmd, data))
+            else:
+-               print "# %s" % cmd
++               print("# %s" % cmd)
+         elif line.startswith("(MSG: "):
+-            print "# %s" % line[6:-1]
++            print("# %s" % line[6:-1])
+         elif line:
+-            print "# %s" % line
++            print("# %s" % line)
+         sys.stdout.flush()
+ 
+     def run(self, proc, output=""):
+         # Complete retrieval of the list of tests
+-        output += proc.stdout.read()
++        output += proc.stdout.read().decode("utf-8")
+         proc.wait()
+         if proc.returncode:
+             sys.stderr.write("tap-gtester: listing GTest tests failed: %d\n" % proc.returncode)
+@@ -105,10 +105,10 @@ class GTestCompiler(NullCompiler):
+             if line.startswith("/"):
+                 self.test_remaining.append(line.strip())
+         if not self.test_remaining:
+-            print "Bail out! No tests found in GTest: %s" % self.command[0]
++            print("Bail out! No tests found in GTest: %s" % self.command[0])
+             return 0
+ 
+-        print "1..%d" % len(self.test_remaining)
++        print("1..%d" % len(self.test_remaining))
+ 
+         # First try to run all the tests in a batch
+         proc = subprocess.Popen(self.command + ["--verbose" ], close_fds=True, stdout=subprocess.PIPE)
+@@ -120,7 +120,7 @@ class GTestCompiler(NullCompiler):
+         while True:
+             # Assume that the last test failed
+             if self.test_name:
+-                print "not ok %d %s" % (self.test_num, self.test_name)
++                print("not ok %d %s" % (self.test_num, self.test_name))
+                 self.test_name = None
+ 
+             # Run any tests which didn't get run
+@@ -156,7 +156,7 @@ def main(argv):
+     if format in ["auto", "gtest"]:
+         list_cmd = cmd + ["-l", "--verbose"]
+         proc = subprocess.Popen(list_cmd, close_fds=True, stdout=subprocess.PIPE)
+-        output = proc.stdout.readline()
++        output = proc.stdout.readline().decode("utf-8")
+         # Smell whether we're dealing with GTest list output from first line
+         if "random seed" in output or "GTest" in output or output.startswith("/"):
+             format = "gtest"
+diff --git a/build/tap-unittest b/build/tap-unittest
+index a2e6c81..aafafde 100755
+--- a/build/tap-unittest
++++ b/build/tap-unittest
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ #
+ # This is a TAP compiler for python unittest
+-- 
+2.8.0.rc3
+
