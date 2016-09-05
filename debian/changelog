@@ -1,3 +1,9 @@
+libsecret (0.18.5-3) UNRELEASED; urgency=medium
+
+  * Add basic autopkgtest to run upstream build tests
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 05 Sep 2016 16:29:33 -0400
+
 libsecret (0.18.5-2) unstable; urgency=medium
 
   * Drop --disable-silent-rules from debian/rules. This is now handled by dh

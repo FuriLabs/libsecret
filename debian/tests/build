@@ -1,0 +1,2 @@
+#!/bin/sh
+env -u LD_PRELOAD dbus-run-session -- make check

@@ -1,0 +1,3 @@
+Tests: build
+Depends: @, @builddeps@
+Restrictions: build-needed
