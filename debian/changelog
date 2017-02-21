@@ -1,6 +1,13 @@
 libsecret (0.18.5-3) UNRELEASED; urgency=medium
 
+  [ Jeremy Bicha ]
   * Add basic autopkgtest to run upstream build tests
+
+  [ Emilio Pozuelo Monfort ]
+  * debian/patches/0004-tests-collection-add-setup-delay.patch:
+    + Add some delay for the test bus to go up and down. Fixes a test
+      that otherwise may fail, especially when running on a single cpu
+      machine. Closes: #837067.
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 05 Sep 2016 16:29:33 -0400
 
