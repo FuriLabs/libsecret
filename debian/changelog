@@ -1,4 +1,4 @@
-libsecret (0.18.5-3) UNRELEASED; urgency=medium
+libsecret (0.18.5-3) unstable; urgency=medium
 
   [ Jeremy Bicha ]
   * Add basic autopkgtest to run upstream build tests
@@ -9,7 +9,7 @@ libsecret (0.18.5-3) UNRELEASED; urgency=medium
       that otherwise may fail, especially when running on a single cpu
       machine. Closes: #837067.
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 05 Sep 2016 16:29:33 -0400
+ -- Emilio Pozuelo Monfort <pochu@debian.org>  Tue, 21 Feb 2017 22:57:01 +0100
 
 libsecret (0.18.5-2) unstable; urgency=medium
 
