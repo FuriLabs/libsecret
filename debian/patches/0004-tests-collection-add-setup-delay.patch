@@ -2,9 +2,14 @@ Author: Emilio Pozuelo Monfort <pochu@debian.org>
 Bug: https://bugzilla.gnome.org/show_bug.cgi?id=779041
 Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=837067
 
---- a/libsecret/test-collection.c
-+++ b/libsecret/test-collection.c
-@@ -56,6 +56,8 @@
+Update by Carsten Leonhardt <leo@debian.org>: move sleep(1) to the
+beginning of teardown() to address bug #855951
+
+Index: libsecret-0.18.5/libsecret/test-collection.c
+===================================================================
+--- libsecret-0.18.5.orig/libsecret/test-collection.c
++++ libsecret-0.18.5/libsecret/test-collection.c
+@@ -56,12 +56,15 @@ setup (Test *test,
  	test->service = secret_service_get_sync (SECRET_SERVICE_NONE, NULL, &error);
  	g_assert_no_error (error);
  	g_object_add_weak_pointer (G_OBJECT (test->service), (gpointer *)&test->service);
@@ -13,11 +18,10 @@ Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=837067
  }
  
  static void
-@@ -67,6 +69,7 @@
- 	g_assert (test->service == NULL);
- 
- 	mock_service_stop ();
+ teardown (Test *test,
+           gconstpointer unused)
+ {
 +	sleep(1);
- }
- 
- static void
+ 	g_object_unref (test->service);
+ 	secret_service_disconnect ();
+ 	g_assert (test->service == NULL);

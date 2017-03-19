@@ -1,3 +1,12 @@
+libsecret (0.18.5-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * debian/patches/0004-tests-collection-add-setup-delay.patch:
+    + Fix failing test "collection/delete-sync" by correctly placing
+      the delay. Closes: #855951.
+
+ -- Carsten Leonhardt <leo@debian.org>  Sat, 18 Mar 2017 15:56:31 +0000
+
 libsecret (0.18.5-3) unstable; urgency=medium
 
   [ Jeremy Bicha ]
