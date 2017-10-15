@@ -1,4 +1,4 @@
-libsecret (0.18.5-4) UNRELEASED; urgency=medium
+libsecret (0.18.5-4) unstable; urgency=medium
 
   * debian/control.in:
     - Build-Depend on libgcrypt20-dev instead of transitional package
@@ -7,7 +7,7 @@ libsecret (0.18.5-4) UNRELEASED; urgency=medium
   * Enable all hardening flags
   * Bump Standards-Version to 4.1.1
 
- -- Jeremy Bicha <jbicha@debian.org>  Sun, 15 Oct 2017 13:02:45 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 15 Oct 2017 13:39:52 -0400
 
 libsecret (0.18.5-3.1) unstable; urgency=medium
 
