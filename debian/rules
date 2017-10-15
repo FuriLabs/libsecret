@@ -2,6 +2,8 @@
 
 -include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 %:
 	dh $@ --with gir,gnome
 

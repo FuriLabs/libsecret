@@ -4,6 +4,7 @@ libsecret (0.18.5-4) UNRELEASED; urgency=medium
     - Build-Depend on libgcrypt20-dev instead of transitional package
       (Closes: #864119)
   * Bump debhelper compat to 10
+  * Enable all hardening flags
 
  -- Jeremy Bicha <jbicha@debian.org>  Sun, 15 Oct 2017 13:02:45 -0400
 
