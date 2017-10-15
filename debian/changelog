@@ -5,6 +5,7 @@ libsecret (0.18.5-4) UNRELEASED; urgency=medium
       (Closes: #864119)
   * Bump debhelper compat to 10
   * Enable all hardening flags
+  * Bump Standards-Version to 4.1.1
 
  -- Jeremy Bicha <jbicha@debian.org>  Sun, 15 Oct 2017 13:02:45 -0400
 
