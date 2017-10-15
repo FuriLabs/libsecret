@@ -3,8 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: @GNOME_TEAM@
-Build-Depends: debhelper (>= 9),
-               dh-autoreconf,
+Build-Depends: debhelper (>= 10),
                intltool (>= 0.35.0),
                libglib2.0-dev (>= 2.38.0),
                libgcrypt20-dev (>= 1.2.2),

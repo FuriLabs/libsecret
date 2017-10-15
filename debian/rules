@@ -3,7 +3,7 @@
 -include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
 
 %:
-	dh $@ --with autoreconf,gir,gnome
+	dh $@ --with gir,gnome
 
 override_dh_install:
 	find debian/tmp/usr/lib -name '*.la' -delete

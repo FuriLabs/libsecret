@@ -3,6 +3,7 @@ libsecret (0.18.5-4) UNRELEASED; urgency=medium
   * debian/control.in:
     - Build-Depend on libgcrypt20-dev instead of transitional package
       (Closes: #864119)
+  * Bump debhelper compat to 10
 
  -- Jeremy Bicha <jbicha@debian.org>  Sun, 15 Oct 2017 13:02:45 -0400
 
