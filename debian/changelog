@@ -1,3 +1,11 @@
+libsecret (0.18.5-5) UNRELEASED; urgency=medium
+
+  * debian/rules:
+    - Don't run Python and Vala tests on Ubuntu's s390x since
+      they hang on Launchpad's builders
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 11 Nov 2017 15:28:13 -0500
+
 libsecret (0.18.5-4) unstable; urgency=medium
 
   * debian/control.in:

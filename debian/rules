@@ -7,10 +7,21 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 %:
 	dh $@ --with gir,gnome
 
+# Some tests hang on Launchpad builders on s390x
+override_dh_autoreconf:
+ifeq (yes,$(shell dpkg-vendor --is Ubuntu && echo yes))
+ifneq (,$(filter $(DEB_HOST_ARCH),s390x))
+	sed -i -e '/^TESTS/s/\$$(PY_TESTS)//' -e '/^TESTS/s/\$$(VALA_TESTS)//' \
+		 libsecret/Makefile.am
+endif
+endif
+	dh_autoreconf
+
 override_dh_install:
 	find debian/tmp/usr/lib -name '*.la' -delete
 	dh_install --fail-missing
 
 override_dh_auto_test:
+ifneq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	env -u LD_PRELOAD dbus-run-session -- make check
-
+endif

@@ -18,8 +18,8 @@ Build-Depends: debhelper (>= 10),
                python3-dbus,
                python3-gi,
                gnome-pkg-tools,
-               dbus,
-               gjs
+               dbus <!nocheck>,
+               gjs <!nocheck>
 Standards-Version: 4.1.1
 Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/libsecret
 Vcs-Browser: https://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/libsecret/
