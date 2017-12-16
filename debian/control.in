@@ -17,8 +17,8 @@ Build-Depends: debhelper (>= 10),
                dbus <!nocheck>,
                gjs <!nocheck>
 Standards-Version: 4.1.1
-Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/libsecret
-Vcs-Browser: https://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/libsecret/
+Vcs-Git: https://anonscm.debian.org/git/pkg-gnome/libsecret.git
+Vcs-Browser: https://anonscm.debian.org/git/pkg-gnome/libsecret.git
 Homepage: https://wiki.gnome.org/Projects/Libsecret
 
 Package: libsecret-1-dev
