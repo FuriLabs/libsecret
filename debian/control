@@ -20,7 +20,7 @@ Build-Depends: debhelper (>= 10),
                gnome-pkg-tools,
                dbus <!nocheck>,
                gjs <!nocheck>
-Standards-Version: 4.1.1
+Standards-Version: 4.1.2
 Vcs-Git: https://anonscm.debian.org/git/pkg-gnome/libsecret.git
 Vcs-Browser: https://anonscm.debian.org/git/pkg-gnome/libsecret.git
 Homepage: https://wiki.gnome.org/Projects/Libsecret
@@ -32,7 +32,6 @@ Depends: libsecret-1-0 (= ${binary:Version}),
          gir1.2-secret-1 (= ${binary:Version}),
          libglib2.0-dev,
          ${misc:Depends}
-Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Secret store (development files)
  Library for storing and retrieving passwords and other secrets.
@@ -47,7 +46,6 @@ Depends: ${misc:Depends},
          ${shlibs:Depends},
          libsecret-common
 Breaks: seahorse (<< 3.10)
-Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Secret store
  Library for storing and retrieving passwords and other secrets.
@@ -57,7 +55,6 @@ Package: libsecret-common
 Section: libs
 Architecture: all
 Depends: ${misc:Depends}
-Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: Secret store (common files)
  Library for storing and retrieving passwords and other secrets.
@@ -70,7 +67,6 @@ Section: admin
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends}
-Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: tool for storing and retrieving GObject passwords
  This package provides a command line tool using libsecret to access
