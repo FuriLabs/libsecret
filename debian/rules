@@ -18,7 +18,7 @@ endif
 	dh_autoreconf --as-needed
 
 override_dh_install:
-	find debian/tmp/usr/lib -name '*.la' -delete
+	find debian/tmp -name '*.la' -print -delete
 	dh_install
 
 override_dh_missing:
