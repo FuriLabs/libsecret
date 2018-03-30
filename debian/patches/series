@@ -1,4 +1,1 @@
-0001-build-Port-to-Python-3.patch
-0002-libsecret-Get-rid-of-PyGI-warnings-about-unspecified.patch
-0003-Makefile.am-Compile-vala-unstable-tests-with-SECRET_.patch
 0004-tests-collection-add-setup-delay.patch
