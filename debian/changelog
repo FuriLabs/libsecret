@@ -1,10 +1,10 @@
-libsecret (0.18.6-1) UNRELEASED; urgency=medium
+libsecret (0.18.6-1) unstable; urgency=medium
 
   * New upstream release
   * debian/patches: Drop patches included in new release
   * debian/libsecret-1-0.symbols: update for new symbols
 
- -- Tim Lunn <tim@feathertop.org>  Fri, 30 Mar 2018 17:05:38 +1100
+ -- Tim Lunn <tim@feathertop.org>  Sat, 31 Mar 2018 16:43:19 +1100
 
 libsecret (0.18.5-6) unstable; urgency=medium
 
