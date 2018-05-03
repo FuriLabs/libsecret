@@ -28,6 +28,6 @@ override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
 
 override_dh_auto_test:
-ifneq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+ifeq (, $(filter nocheck, $(DEB_BUILD_OPTIONS)))
 	env -u LD_PRELOAD dbus-run-session -- make check
 endif
