@@ -1,3 +1,10 @@
+libsecret (0.18.6-3) unstable; urgency=medium
+
+  * Don't Build-Depend on gjs on s390x and stop running js tests there
+    in preparation for removing gjs on s390x (#909536) (LP: #1794721)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 27 Sep 2018 14:46:00 -0400
+
 libsecret (0.18.6-2) unstable; urgency=medium
 
   * debian/rules: fix logic error in nocheck handling (Closes: #897596)
