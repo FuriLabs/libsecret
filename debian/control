@@ -87,4 +87,3 @@ Description: Secret store (GObject-Introspection)
  It communicates with the "Secret Service" using DBus.
  .
  This package contains the introspection datas for the libsecret library.
-

@@ -1,3 +1,11 @@
+libsecret (0.18.6-4) unstable; urgency=medium
+
+  * Add -Wl,-O1 to our LDFLAGS
+  * Run dh_auto_test instead of make check
+  * Bump Standards-Version to 4.3.0
+
+ -- Jeremy Bicha <jbicha@debian.org>  Fri, 28 Dec 2018 08:56:05 -0500
+
 libsecret (0.18.6-3) unstable; urgency=medium
 
   * Don't Build-Depend on gjs on s390x and stop running js tests there
@@ -248,7 +256,7 @@ libsecret (0.8-0ubuntu2) quantal; urgency=low
   * debian/rules:
     - enable tests but don't fail build on issues yet, there are issues
       when running them under fakeroot for example (dbus doesn't like it)
-  * debian/copyright: drop reference to common-license BSD 
+  * debian/copyright: drop reference to common-license BSD
     (lintian warning)
 
  -- Sebastien Bacher <seb128@debian.org>  Tue, 07 Aug 2012 16:43:10 +0200
@@ -257,11 +265,11 @@ libsecret (0.8-0ubuntu1) quantal; urgency=low
 
   * New upstream version
   * Install libsecret-unstable dev files as well
-  * debian/control: 
+  * debian/control:
     - updated some descriptions
-  * debian/copyright: 
+  * debian/copyright:
     - updated
-  * debian/libsecret-1-dev.install: 
+  * debian/libsecret-1-dev.install:
     - install the documentation
   * debian/libsecret-1-0.symbols:
     - updated for the new version
