@@ -13,11 +13,11 @@ Files: build/valgrind/*
 Copyright: Copyright (C) 2000-2010 Julian Seward
 License: BSD-3-clause
 
-Files: libsecret/tests/mock/hkdf.py has
+Files: libsecret/mock/hkdf.py
 Copyright: Zooko O'Whielacronx <zooko@zooko.com>
 License: GPL-2+
 
-Files: libsecret/tests/mock/aes.py
+Files: libsecret/mock/aes.py
 Copyright: Copyright Josh Davis
            Copyright Alex Martelli
            Copyright Laurent Haan
