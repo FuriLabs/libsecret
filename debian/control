@@ -6,9 +6,9 @@ Source: libsecret
 Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Emilio Pozuelo Monfort <pochu@debian.org>, Jeremy Bicha <jbicha@debian.org>, Michael Biebl <biebl@debian.org>, Tim Lunn <tim@feathertop.org>
+Uploaders: Emilio Pozuelo Monfort <pochu@debian.org>, Jeremy Bicha <jbicha@debian.org>, Tim Lunn <tim@feathertop.org>
 Build-Depends: debhelper (>= 11),
-               libglib2.0-dev (>= 2.38.0),
+               libglib2.0-dev (>= 2.44.0),
                libgcrypt20-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
                gobject-introspection (>= 1.29),
@@ -29,7 +29,7 @@ Architecture: any
 Section: libdevel
 Depends: libsecret-1-0 (= ${binary:Version}),
          gir1.2-secret-1 (= ${binary:Version}),
-         libglib2.0-dev,
+         libglib2.0-dev (>= 2.44.0),
          ${misc:Depends}
 Multi-Arch: same
 Description: Secret store (development files)
