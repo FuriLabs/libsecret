@@ -1,6 +1,6 @@
 AC_PREREQ(2.63)
 
-AC_INIT([libsecret],[0.18.7],
+AC_INIT([libsecret],[0.18.8],
         [https://gitlab.gnome.org/GNOME/libsecret/issues/],
         [libsecret])
 
@@ -9,9 +9,9 @@ dnl Dependency versions
 
 # Required
 
-GLIB_REQ=2.38.0
-GLIB_MIN=GLIB_VERSION_2_38
-GLIB_MAX=GLIB_VERSION_2_38
+GLIB_REQ=2.44.0
+GLIB_MIN=GLIB_VERSION_2_44
+GLIB_MAX=GLIB_VERSION_2_44
 
 # Optional
 
