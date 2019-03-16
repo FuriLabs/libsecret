@@ -1,8 +1,9 @@
-libsecret (0.18.8-1) UNRELEASED; urgency=medium
+libsecret (0.18.8-1) experimental; urgency=medium
 
   * New upstream release
+  * Bump minimum libglib2.0-dev to 2.44.0
 
- -- Jeremy Bicha <jbicha@debian.org>  Sat, 16 Mar 2019 08:48:07 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 16 Mar 2019 08:55:40 -0400
 
 libsecret (0.18.7-1) unstable; urgency=medium
 
