@@ -1,3 +1,9 @@
+libsecret (0.18.8-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 16 Mar 2019 08:48:07 -0400
+
 libsecret (0.18.7-1) unstable; urgency=medium
 
   * New upstream release
