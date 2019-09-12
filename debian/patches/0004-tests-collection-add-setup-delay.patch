@@ -1,14 +1,20 @@
-Author: Emilio Pozuelo Monfort <pochu@debian.org>
+From: Emilio Pozuelo Monfort <pochu@debian.org>
+Date: Thu, 12 Sep 2019 09:26:05 +0100
+Subject: tests-collection-add-setup-delay
+
 Bug: https://bugzilla.gnome.org/show_bug.cgi?id=779041
 Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=837067
 
 Update by Carsten Leonhardt <leo@debian.org>: move sleep(1) to the
 beginning of teardown() to address bug #855951
+---
+ libsecret/test-collection.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Index: libsecret-0.18.5/libsecret/test-collection.c
-===================================================================
---- libsecret-0.18.5.orig/libsecret/test-collection.c
-+++ libsecret-0.18.5/libsecret/test-collection.c
+diff --git a/libsecret/test-collection.c b/libsecret/test-collection.c
+index 662c41d..dd50de4 100644
+--- a/libsecret/test-collection.c
++++ b/libsecret/test-collection.c
 @@ -56,12 +56,15 @@ setup (Test *test,
  	test->service = secret_service_get_sync (SECRET_SERVICE_NONE, NULL, &error);
  	g_assert_no_error (error);

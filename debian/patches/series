@@ -1,1 +1,3 @@
 0004-tests-collection-add-setup-delay.patch
+build-Drop-TAP-wrapper-script-around-GLib-tests.patch
+build-Use-stock-tap-driver-from-automake.patch
