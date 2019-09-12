@@ -58,12 +58,15 @@ setup (Test *test,
 	test->service = secret_service_get_sync (SECRET_SERVICE_NONE, NULL, &error);
 	g_assert_no_error (error);
 	g_object_add_weak_pointer (G_OBJECT (test->service), (gpointer *)&test->service);
+
+	sleep(1);
 }
 
 static void
 teardown (Test *test,
           gconstpointer unused)
 {
+	sleep(1);
 	g_object_unref (test->service);
 	secret_service_disconnect ();
 	g_assert_null (test->service);
