@@ -7,7 +7,7 @@ Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Emilio Pozuelo Monfort <pochu@debian.org>, Jeremy Bicha <jbicha@debian.org>, Tim Lunn <tim@feathertop.org>
-Build-Depends: debhelper (>= 11),
+Build-Depends: debhelper-compat (= 12),
                libglib2.0-dev (>= 2.44.0),
                libgcrypt20-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
