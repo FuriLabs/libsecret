@@ -19,7 +19,7 @@ Build-Depends: debhelper (>= 11),
                gnome-pkg-tools,
                dbus <!nocheck>,
                gjs [!s390x] <!nocheck>
-Standards-Version: 4.3.0
+Standards-Version: 4.4.0
 Vcs-Browser: https://salsa.debian.org/gnome-team/libsecret
 Vcs-Git: https://salsa.debian.org/gnome-team/libsecret.git
 Homepage: https://wiki.gnome.org/Projects/Libsecret
