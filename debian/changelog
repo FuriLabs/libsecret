@@ -1,5 +1,6 @@
-libsecret (0.18.8-2) UNRELEASED; urgency=medium
+libsecret (0.18.8-2) unstable; urgency=medium
 
+  * Team upload
   * d/p/build-Drop-TAP-wrapper-script-around-GLib-tests.patch,
     d/p/build-Use-stock-tap-driver-from-automake.patch:
     Apply patches from 0.19.x to fix FTBFS with GLib 2.62
@@ -9,8 +10,9 @@ libsecret (0.18.8-2) UNRELEASED; urgency=medium
   * Standards-Version: 4.4.0 (no changes required)
   * Set Rules-Requires-Root to no
   * Use debhelper-compat 12
+  * Upload to unstable
 
- -- Simon McVittie <smcv@debian.org>  Thu, 12 Sep 2019 11:49:39 +0100
+ -- Simon McVittie <smcv@debian.org>  Thu, 12 Sep 2019 11:50:23 +0100
 
 libsecret (0.18.8-1) experimental; urgency=medium
 
