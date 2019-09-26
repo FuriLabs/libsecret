@@ -120,7 +120,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = libsecret/libsecret.pc \
-	libsecret/libsecret-unstable.pc
+	libsecret/libsecret-unstable.pc libsecret/secret-version.h
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(man1dir)" "$(DESTDIR)$(girdir)" \
@@ -200,6 +200,7 @@ am__objects_3 = libsecret/@SECRET_MAJOR@_la-secret-attributes.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-methods.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-password.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-prompt.lo \
+	libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-schema.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-schemas.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-service.lo \
@@ -207,11 +208,12 @@ am__objects_3 = libsecret/@SECRET_MAJOR@_la-secret-attributes.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-paths.lo $(am__objects_2)
 am__objects_4 = libsecret/@SECRET_MAJOR@_la-secret-session.lo \
 	libsecret/@SECRET_MAJOR@_la-secret-util.lo $(am__objects_2)
-am__objects_5 = libsecret_@SECRET_MAJOR@_la-secret-dbus-generated.lo \
-	libsecret/@SECRET_MAJOR@_la-secret-enum-types.lo \
+am__objects_5 = libsecret/@SECRET_MAJOR@_la-secret-enum-types.lo \
 	$(am__objects_2)
+am__objects_6 = libsecret_@SECRET_MAJOR@_la-secret-dbus-generated.lo \
+	$(am__objects_5) $(am__objects_2)
 am_libsecret_@SECRET_MAJOR@_la_OBJECTS = $(am__objects_3) \
-	$(am__objects_4) $(am__objects_5) $(am__objects_2)
+	$(am__objects_4) $(am__objects_6) $(am__objects_2)
 libsecret_@SECRET_MAJOR@_la_OBJECTS =  \
 	$(am_libsecret_@SECRET_MAJOR@_la_OBJECTS)
 libsecret_@SECRET_MAJOR@_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
@@ -299,7 +301,7 @@ am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
 am__v_at_0 = @
 am__v_at_1 = 
 DEFAULT_INCLUDES = -I.@am__isrc@
-depcomp = $(SHELL) $(top_srcdir)/build/depcomp
+depcomp = $(SHELL) $(top_srcdir)/build/litter/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/libsecret_@SECRET_MAJOR@_la-secret-dbus-generated.Plo \
 	egg/$(DEPDIR)/egg-dh.Plo egg/$(DEPDIR)/egg-hex.Plo \
@@ -316,6 +318,7 @@ am__depfiles_remade = ./$(DEPDIR)/libsecret_@SECRET_MAJOR@_la-secret-dbus-genera
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-password.Plo \
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-paths.Plo \
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-prompt.Plo \
+	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Plo \
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schema.Plo \
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schemas.Plo \
 	libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-service.Plo \
@@ -600,23 +603,33 @@ am__set_b = \
 am__test_logs1 = $(TESTS:=.log)
 am__test_logs2 = $(am__test_logs1:@EXEEXT@.log=.log)
 am__test_logs3 = $(am__test_logs2:.py.log=.log)
+PY_LOG_DRIVER = $(SHELL) $(top_srcdir)/build/litter/test-driver
 PY_LOG_COMPILE = $(PY_LOG_COMPILER) $(AM_PY_LOG_FLAGS) $(PY_LOG_FLAGS)
 TEST_LOGS = $(am__test_logs3:.js.log=.log)
+JS_LOG_DRIVER = $(SHELL) $(top_srcdir)/build/litter/test-driver
 JS_LOG_COMPILE = $(JS_LOG_COMPILER) $(AM_JS_LOG_FLAGS) $(JS_LOG_FLAGS)
 DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/docs/man/Makefile.am $(srcdir)/egg/Makefile.am \
 	$(srcdir)/libsecret/Makefile.am $(srcdir)/tool/Makefile.am \
-	$(top_srcdir)/build/compile $(top_srcdir)/build/config.guess \
-	$(top_srcdir)/build/config.rpath \
-	$(top_srcdir)/build/config.sub $(top_srcdir)/build/depcomp \
-	$(top_srcdir)/build/install-sh $(top_srcdir)/build/ltmain.sh \
-	$(top_srcdir)/build/missing \
+	$(top_srcdir)/build/litter/compile \
+	$(top_srcdir)/build/litter/config.guess \
+	$(top_srcdir)/build/litter/config.rpath \
+	$(top_srcdir)/build/litter/config.sub \
+	$(top_srcdir)/build/litter/depcomp \
+	$(top_srcdir)/build/litter/install-sh \
+	$(top_srcdir)/build/litter/ltmain.sh \
+	$(top_srcdir)/build/litter/missing \
+	$(top_srcdir)/build/litter/tap-driver.sh \
+	$(top_srcdir)/build/litter/test-driver \
 	$(top_srcdir)/libsecret/libsecret-unstable.pc.in \
-	$(top_srcdir)/libsecret/libsecret.pc.in ABOUT-NLS AUTHORS \
-	COPYING ChangeLog INSTALL NEWS README build/compile \
-	build/config.guess build/config.rpath build/config.sub \
-	build/depcomp build/install-sh build/ltmain.sh build/missing
+	$(top_srcdir)/libsecret/libsecret.pc.in \
+	$(top_srcdir)/libsecret/secret-version.h.in ABOUT-NLS AUTHORS \
+	COPYING ChangeLog INSTALL NEWS README build/litter/compile \
+	build/litter/config.guess build/litter/config.rpath \
+	build/litter/config.sub build/litter/depcomp \
+	build/litter/install-sh build/litter/ltmain.sh \
+	build/litter/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -761,7 +774,10 @@ POSUB = @POSUB@
 RANLIB = @RANLIB@
 SECRET_LT_RELEASE = @SECRET_LT_RELEASE@
 SECRET_MAJOR = @SECRET_MAJOR@
+SECRET_MAJOR_VERSION = @SECRET_MAJOR_VERSION@
+SECRET_MICRO_VERSION = @SECRET_MICRO_VERSION@
 SECRET_MINOR = @SECRET_MINOR@
+SECRET_MINOR_VERSION = @SECRET_MINOR_VERSION@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -851,18 +867,16 @@ TESTS_ENVIRONMENT = LD_LIBRARY_PATH=$(builddir)/.libs GI_TYPELIB_PATH=$(builddir
 TEST_EXTENSIONS = .py .js
 
 # Default executable tests
-LOG_DRIVER = $(srcdir)/build/tap-driver
-LOG_DRIVER_FLAGS = --format=tap
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
+	$(top_srcdir)/build/litter/tap-driver.sh
+
+LOG_DRIVER_FLAGS = --comments --ignore-exit
 LOG_COMPILER = $(srcdir)/build/tap-gtester
 
 # Python tests
-PY_LOG_DRIVER = $(srcdir)/build/tap-driver
-PY_LOG_DRIVER_FLAGS = --format=tap
 PY_LOG_COMPILER = $(srcdir)/build/tap-unittest
 
 # Javascript tests
-JS_LOG_DRIVER = $(srcdir)/build/tap-driver
-JS_LOG_DRIVER_FLAGS = --format=simple
 JS_LOG_COMPILER = gjs
 VALGRIND_ARGS = --trace-children=no --quiet --error-exitcode=33 \
 	--suppressions=valgrind-suppressions --gen-suppressions=all \
@@ -928,9 +942,13 @@ CLEANFILES = $(pkgconfig_DATA) $(gir_DATA) $(typelibs_DATA) \
 	temp-dbus-generated.h $(NULL) $(am__append_5) $(am__append_7)
 
 #--------------------------------------------------------------------
-EXTRA_DIST = COPYING.TESTS build/valgrind build/tap-gtester \
-	build/tap-driver build/tap-unittest $(VALGRIND_SUPPRESSIONS) \
-	egg/egg-testing.h libsecret/secret-enum-types.h.template \
+EXTRA_DIST = README.md COPYING.TESTS meson_options.txt meson.build \
+	docs/meson.build docs/man/meson.build \
+	docs/reference/libsecret/meson.build egg/meson.build \
+	libsecret/meson.build po/meson.build tool/meson.build \
+	build/valgrind build/tap-gtester build/tap-unittest \
+	$(VALGRIND_SUPPRESSIONS) egg/egg-testing.h \
+	libsecret/secret-enum-types.h.template \
 	libsecret/secret-enum-types.c.template \
 	libsecret/org.freedesktop.Secrets.xml \
 	libsecret/Secret-@SECRET_MAJOR@.metadata $(NULL) \
@@ -975,6 +993,7 @@ libsecret_HEADS = \
 	libsecret/secret-password.h \
 	libsecret/secret-paths.h \
 	libsecret/secret-prompt.h \
+	libsecret/secret-retrievable.h \
 	libsecret/secret-schema.h \
 	libsecret/secret-schemas.h \
 	libsecret/secret-service.h \
@@ -985,11 +1004,17 @@ libsecret_HEADS = \
 inc_HEADERS = \
 	$(libsecret_HEADS) \
 	libsecret/secret-enum-types.h \
+	libsecret/secret-version.h \
+	$(NULL)
+
+libsecret_BUILT_ENUMS = \
+	libsecret/secret-enum-types.c libsecret/secret-enum-types.h \
 	$(NULL)
 
 libsecret_BUILT = \
 	secret-dbus-generated.c secret-dbus-generated.h \
-	libsecret/secret-enum-types.c libsecret/secret-enum-types.h \
+	$(libsecret_BUILT_ENUMS) \
+	libsecret/secret-version.h \
 	$(NULL)
 
 libsecret_PUBLIC = \
@@ -999,6 +1024,7 @@ libsecret_PUBLIC = \
 	libsecret/secret-methods.c \
 	libsecret/secret-password.h libsecret/secret-password.c \
 	libsecret/secret-prompt.h libsecret/secret-prompt.c \
+	libsecret/secret-retrievable.h libsecret/secret-retrievable.c \
 	libsecret/secret-schema.h libsecret/secret-schema.c \
 	libsecret/secret-schemas.h libsecret/secret-schemas.c \
 	libsecret/secret-service.h libsecret/secret-service.c \
@@ -1051,7 +1077,12 @@ DBUS_XML_DEFINITIONS = \
 @HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_INCLUDES = GObject-2.0 Gio-2.0
 @HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_LIBS = libsecret-@SECRET_MAJOR@.la
 @HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_CFLAGS = -I$(srcdir) -I$(builddir) -DSECRET_COMPILATION
-@HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_FILES = $(libsecret_PUBLIC)
+@HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_FILES = \
+@HAVE_INTROSPECTION_TRUE@	$(libsecret_PUBLIC) \
+@HAVE_INTROSPECTION_TRUE@	$(libsecret_BUILT_ENUMS) \
+@HAVE_INTROSPECTION_TRUE@	libsecret/secret-version.h \
+@HAVE_INTROSPECTION_TRUE@	$(NULL)
+
 @HAVE_INTROSPECTION_TRUE@Secret_@SECRET_MAJOR@_gir_SCANNERFLAGS = --c-include "libsecret/secret.h"
 @ENABLE_VAPIGEN_TRUE@@HAVE_INTROSPECTION_TRUE@libsecret_@SECRET_MAJOR@_vapi_DEPS = glib-2.0 gio-2.0
 @ENABLE_VAPIGEN_TRUE@@HAVE_INTROSPECTION_TRUE@libsecret_@SECRET_MAJOR@_vapi_METADATADIRS = $(srcdir)/libsecret
@@ -1239,6 +1270,8 @@ libsecret/libsecret.pc: $(top_builddir)/config.status $(top_srcdir)/libsecret/li
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 libsecret/libsecret-unstable.pc: $(top_builddir)/config.status $(top_srcdir)/libsecret/libsecret-unstable.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
+libsecret/secret-version.h: $(top_builddir)/config.status $(top_srcdir)/libsecret/secret-version.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
@@ -1391,6 +1424,8 @@ libsecret/@SECRET_MAJOR@_la-secret-methods.lo:  \
 libsecret/@SECRET_MAJOR@_la-secret-password.lo:  \
 	libsecret/$(am__dirstamp) libsecret/$(DEPDIR)/$(am__dirstamp)
 libsecret/@SECRET_MAJOR@_la-secret-prompt.lo:  \
+	libsecret/$(am__dirstamp) libsecret/$(DEPDIR)/$(am__dirstamp)
+libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo:  \
 	libsecret/$(am__dirstamp) libsecret/$(DEPDIR)/$(am__dirstamp)
 libsecret/@SECRET_MAJOR@_la-secret-schema.lo:  \
 	libsecret/$(am__dirstamp) libsecret/$(DEPDIR)/$(am__dirstamp)
@@ -1549,6 +1584,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-password.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-paths.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-prompt.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schema.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schemas.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-service.Plo@am__quote@ # am--include-marker
@@ -1639,6 +1675,13 @@ libsecret/@SECRET_MAJOR@_la-secret-prompt.lo: libsecret/secret-prompt.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libsecret/secret-prompt.c' object='libsecret/@SECRET_MAJOR@_la-secret-prompt.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsecret_@SECRET_MAJOR@_la_CFLAGS) $(CFLAGS) -c -o libsecret/@SECRET_MAJOR@_la-secret-prompt.lo `test -f 'libsecret/secret-prompt.c' || echo '$(srcdir)/'`libsecret/secret-prompt.c
+
+libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo: libsecret/secret-retrievable.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsecret_@SECRET_MAJOR@_la_CFLAGS) $(CFLAGS) -MT libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo -MD -MP -MF libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Tpo -c -o libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo `test -f 'libsecret/secret-retrievable.c' || echo '$(srcdir)/'`libsecret/secret-retrievable.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Tpo libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libsecret/secret-retrievable.c' object='libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsecret_@SECRET_MAJOR@_la_CFLAGS) $(CFLAGS) -c -o libsecret/@SECRET_MAJOR@_la-secret-retrievable.lo `test -f 'libsecret/secret-retrievable.c' || echo '$(srcdir)/'`libsecret/secret-retrievable.c
 
 libsecret/@SECRET_MAJOR@_la-secret-schema.lo: libsecret/secret-schema.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsecret_@SECRET_MAJOR@_la_CFLAGS) $(CFLAGS) -MT libsecret/@SECRET_MAJOR@_la-secret-schema.lo -MD -MP -MF libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schema.Tpo -c -o libsecret/@SECRET_MAJOR@_la-secret-schema.lo `test -f 'libsecret/secret-schema.c' || echo '$(srcdir)/'`libsecret/secret-schema.c
@@ -2527,6 +2570,7 @@ distclean: distclean-recursive
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-password.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-paths.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-prompt.Plo
+	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schema.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schemas.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-service.Plo
@@ -2612,6 +2656,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-password.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-paths.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-prompt.Plo
+	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-retrievable.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schema.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-schemas.Plo
 	-rm -f libsecret/$(DEPDIR)/@SECRET_MAJOR@_la-secret-service.Plo

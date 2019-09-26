@@ -12,6 +12,7 @@ libsecret_HEADS = \
 	libsecret/secret-password.h \
 	libsecret/secret-paths.h \
 	libsecret/secret-prompt.h \
+	libsecret/secret-retrievable.h \
 	libsecret/secret-schema.h \
 	libsecret/secret-schemas.h \
 	libsecret/secret-service.h \
@@ -22,11 +23,17 @@ libsecret_HEADS = \
 inc_HEADERS = \
 	$(libsecret_HEADS) \
 	libsecret/secret-enum-types.h \
+	libsecret/secret-version.h \
+	$(NULL)
+
+libsecret_BUILT_ENUMS = \
+	libsecret/secret-enum-types.c libsecret/secret-enum-types.h \
 	$(NULL)
 
 libsecret_BUILT = \
 	secret-dbus-generated.c secret-dbus-generated.h \
-	libsecret/secret-enum-types.c libsecret/secret-enum-types.h \
+	$(libsecret_BUILT_ENUMS) \
+	libsecret/secret-version.h \
 	$(NULL)
 
 libsecret_PUBLIC = \
@@ -36,6 +43,7 @@ libsecret_PUBLIC = \
 	libsecret/secret-methods.c \
 	libsecret/secret-password.h libsecret/secret-password.c \
 	libsecret/secret-prompt.h libsecret/secret-prompt.c \
+	libsecret/secret-retrievable.h libsecret/secret-retrievable.c \
 	libsecret/secret-schema.h libsecret/secret-schema.c \
 	libsecret/secret-schemas.h libsecret/secret-schemas.c \
 	libsecret/secret-service.h libsecret/secret-service.c \
@@ -117,7 +125,11 @@ Secret_@SECRET_MAJOR@_gir_EXPORT_PACKAGES = libsecret-@SECRET_MAJOR@
 Secret_@SECRET_MAJOR@_gir_INCLUDES = GObject-2.0 Gio-2.0
 Secret_@SECRET_MAJOR@_gir_LIBS = libsecret-@SECRET_MAJOR@.la
 Secret_@SECRET_MAJOR@_gir_CFLAGS = -I$(srcdir) -I$(builddir) -DSECRET_COMPILATION
-Secret_@SECRET_MAJOR@_gir_FILES = $(libsecret_PUBLIC)
+Secret_@SECRET_MAJOR@_gir_FILES = \
+	$(libsecret_PUBLIC) \
+	$(libsecret_BUILT_ENUMS) \
+	libsecret/secret-version.h \
+	$(NULL)
 Secret_@SECRET_MAJOR@_gir_SCANNERFLAGS = --c-include "libsecret/secret.h"
 
 gir_DATA += Secret-@SECRET_MAJOR@.gir
@@ -138,7 +150,7 @@ libsecret-$(SECRET_MAJOR).deps: Makefile.am
 vapi_DATA += \
 	libsecret-@SECRET_MAJOR@.vapi \
 	libsecret-@SECRET_MAJOR@.deps
-	
+
 endif # ENABLE_VAPIGEN
 endif # HAVE_INTROSPECTION
 

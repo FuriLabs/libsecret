@@ -14,6 +14,8 @@
 
 #include "config.h"
 
+#undef G_DISABLE_ASSERT
+
 #include "secret-password.h"
 #include "secret-paths.h"
 #include "secret-private.h"
@@ -75,8 +77,8 @@ on_complete_get_result (GObject *source,
                         gpointer user_data)
 {
 	GAsyncResult **ret = user_data;
-	g_assert (ret != NULL);
-	g_assert (*ret == NULL);
+	g_assert_nonnull (ret);
+	g_assert_null (*ret);
 	*ret = g_object_ref (result);
 	egg_test_wait_stop ();
 }
@@ -113,7 +115,7 @@ test_lookup_async (Test *test,
 	                        "string", "one",
 	                        "number", 1,
 	                        NULL);
-	g_assert (result == NULL);
+	g_assert_null (result);
 
 	egg_test_wait ();
 
@@ -137,7 +139,7 @@ test_lookup_no_name (Test *test,
 	                                        "number", 5,
 	                                        NULL);
 	g_assert_no_error (error);
-	g_assert (password == NULL);
+	g_assert_null (password);
 
 	/* should return an item, because we have a prime schema with 5, and flags not to match name */
 	password = secret_password_lookup_sync (&NO_NAME_SCHEMA, NULL, &error,
@@ -167,7 +169,7 @@ test_store_sync (Test *test,
 	                                  NULL);
 
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
 
 	password = secret_password_lookup_nonpageable_sync (&MOCK_SCHEMA, NULL, &error,
 	                                                    "string", "twelve",
@@ -195,13 +197,13 @@ test_store_async (Test *test,
 	                       "string", "twelve",
 	                       "number", 12,
 	                       NULL);
-	g_assert (result == NULL);
+	g_assert_null (result);
 
 	egg_test_wait ();
 
 	ret = secret_password_store_finish (result, &error);
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
 	g_object_unref (result);
 
 	password = secret_password_lookup_nonpageable_sync (&MOCK_SCHEMA, NULL, &error,
@@ -235,7 +237,7 @@ test_store_unlock (Test *test,
 	collection = secret_collection_new_for_dbus_path_sync (service, collection_path,
 	                                                       SECRET_COLLECTION_NONE, NULL, &error);
 	g_assert_no_error (error);
-	g_assert (secret_collection_get_locked (collection) == FALSE);
+	g_assert_false (secret_collection_get_locked (collection));
 
 	/* Lock it, use async, so collection properties update */
 	objects = g_list_append (NULL, collection);
@@ -247,7 +249,7 @@ test_store_unlock (Test *test,
 	g_list_free (objects);
 
 	/* Check collection state */
-	g_assert (secret_collection_get_locked (collection) == TRUE);
+	g_assert_true (secret_collection_get_locked (collection));
 
 	/* Store the password, use async so collection properties update */
 	secret_password_store (&MOCK_SCHEMA, collection_path, "Label here",
@@ -256,15 +258,15 @@ test_store_unlock (Test *test,
 	                       "string", "twelve",
 	                       "number", 12,
 	                       NULL);
-	g_assert (result == NULL);
+	g_assert_null (result);
 	egg_test_wait ();
 	ret = secret_password_store_finish (result, &error);
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
 	g_clear_object (&result);
 
 	/* Check collection state */
-	g_assert (secret_collection_get_locked (collection) == FALSE);
+	g_assert_false (secret_collection_get_locked (collection));
 
 
 	password = secret_password_lookup_nonpageable_sync (&MOCK_SCHEMA, NULL, &error,
@@ -293,7 +295,7 @@ test_delete_sync (Test *test,
 	                                  NULL);
 
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
 }
 
 static void
@@ -311,13 +313,13 @@ test_delete_async (Test *test,
 	                       "number", 1,
 	                       NULL);
 
-	g_assert (result == NULL);
+	g_assert_null (result);
 
 	egg_test_wait ();
 
 	ret = secret_password_clear_finish (result, &error);
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
 
 	g_object_unref (result);
 }
@@ -336,7 +338,7 @@ test_clear_no_name (Test *test,
 	                                  "number", 5,
 	                                  NULL);
 	g_assert_no_error (error);
-	g_assert (ret == FALSE);
+	g_assert_false (ret);
 
 	/* We need this collection unlocked for the next test */
 	service = secret_service_get_sync (SECRET_SERVICE_NONE, NULL, &error);
@@ -351,7 +353,161 @@ test_clear_no_name (Test *test,
 	                                  NULL);
 
 	g_assert_no_error (error);
-	g_assert (ret == TRUE);
+	g_assert_true (ret);
+}
+
+static void
+free_attributes (gpointer data,
+                 gpointer user_data)
+{
+        g_object_unref ((GObject *)data);
+}
+
+static void
+test_search_sync (Test *test,
+                  gconstpointer used)
+{
+        GList *items;
+        GError *error = NULL;
+
+        items = secret_password_search_sync (&MOCK_SCHEMA, SECRET_SEARCH_ALL,
+					     NULL, &error,
+                                             "even", FALSE,
+                                             "string", "one",
+                                             "number", 1,
+                                             NULL);
+
+        g_assert_no_error (error);
+        g_assert_cmpint (g_list_length (items), ==, 1);
+
+        g_list_foreach (items, free_attributes, NULL);
+        g_list_free (items);
+}
+
+static void
+test_search_async (Test *test,
+                   gconstpointer used)
+{
+        GAsyncResult *result = NULL;
+        GError *error = NULL;
+        GList *items;
+
+        secret_password_search (&MOCK_SCHEMA, SECRET_SEARCH_ALL,
+				NULL, on_complete_get_result, &result,
+                                "even", FALSE,
+                                "string", "one",
+                                "number", 1,
+                                NULL);
+        g_assert (result == NULL);
+
+        egg_test_wait ();
+
+        items = secret_password_search_finish (result, &error);
+        g_assert_no_error (error);
+        g_object_unref (result);
+
+        g_assert_cmpint (g_list_length (items), ==, 1);
+
+        g_list_foreach (items, free_attributes, NULL);
+        g_list_free (items);
+}
+
+static void
+test_search_no_name (Test *test,
+                     gconstpointer used)
+{
+        GError *error = NULL;
+        GList *items;
+
+        /* should return null, because nothing with mock schema and 5 */
+        items = secret_password_search_sync (&MOCK_SCHEMA, SECRET_SEARCH_ALL,
+					     NULL, &error,
+                                             "number", 5,
+                                             NULL);
+        g_assert_no_error (error);
+        g_assert (items == NULL);
+
+        /* should return an item, because we have a prime schema with 5, and flags not to match name */
+        items = secret_password_search_sync (&NO_NAME_SCHEMA, SECRET_SEARCH_ALL,
+					     NULL, &error,
+                                             "number", 5,
+                                             NULL);
+
+        g_assert_no_error (error);
+        g_assert_cmpint (g_list_length (items), ==, 1);
+
+        g_list_foreach (items, free_attributes, NULL);
+        g_list_free (items);
+}
+
+static void
+test_binary_sync (Test *test,
+                  gconstpointer used)
+{
+	const gchar *collection_path = "/org/freedesktop/secrets/collection/english";
+	GError *error = NULL;
+	SecretValue *value;
+	gboolean ret;
+
+	value = secret_value_new ("the password", -1, "text/plain");
+	ret = secret_password_store_binary_sync (&MOCK_SCHEMA, collection_path,
+						 "Label here", value, NULL, &error,
+						 "even", TRUE,
+						 "string", "twelve",
+						 "number", 12,
+						 NULL);
+
+	g_assert_no_error (error);
+	g_assert_true (ret);
+	secret_value_unref (value);
+
+	value = secret_password_lookup_binary_sync (&MOCK_SCHEMA, NULL, &error,
+						    "string", "twelve",
+						    NULL);
+
+	g_assert_no_error (error);
+	g_assert_cmpstr (secret_value_get_text (value), ==, "the password");
+
+	secret_value_unref (value);
+}
+
+static void
+test_binary_async (Test *test,
+                  gconstpointer used)
+{
+	const gchar *collection_path = "/org/freedesktop/secrets/collection/english";
+	GAsyncResult *result = NULL;
+	GError *error = NULL;
+	SecretValue *value;
+	gboolean ret;
+
+	value = secret_value_new ("the password", -1, "text/plain");
+	secret_password_store_binary (&MOCK_SCHEMA, collection_path, "Label here",
+				      value, NULL, on_complete_get_result, &result,
+				      "even", TRUE,
+				      "string", "twelve",
+				      "number", 12,
+				      NULL);
+	g_assert_null (result);
+	secret_value_unref (value);
+
+	egg_test_wait ();
+
+	ret = secret_password_store_finish (result, &error);
+	g_assert_no_error (error);
+	g_assert_true (ret);
+	g_object_unref (result);
+
+	value = secret_password_lookup_binary_sync (&MOCK_SCHEMA, NULL, &error,
+						    "string", "twelve",
+						    NULL);
+
+	g_assert_no_error (error);
+	g_assert_nonnull (value);
+
+	g_assert_cmpstr (secret_value_get_text (value), ==, "the password");
+
+	secret_value_unref (value);
 }
 
 static void
@@ -377,6 +533,13 @@ main (int argc, char **argv)
 	g_test_add ("/password/delete-sync", Test, "mock-service-delete.py", setup, test_delete_sync, teardown);
 	g_test_add ("/password/delete-async", Test, "mock-service-delete.py", setup, test_delete_async, teardown);
 	g_test_add ("/password/clear-no-name", Test, "mock-service-delete.py", setup, test_clear_no_name, teardown);
+
+	g_test_add ("/password/search-sync", Test, "mock-service-normal.py", setup, test_search_sync, teardown);
+	g_test_add ("/password/search-async", Test, "mock-service-normal.py", setup, test_search_async, teardown);
+	g_test_add ("/password/search-no-name", Test, "mock-service-normal.py", setup, test_search_no_name, teardown);
+
+	g_test_add ("/password/binary-sync", Test, "mock-service-normal.py", setup, test_binary_sync, teardown);
+	g_test_add ("/password/binary-async", Test, "mock-service-normal.py", setup, test_binary_async, teardown);
 
 	g_test_add_func ("/password/free-null", test_password_free_null);
 

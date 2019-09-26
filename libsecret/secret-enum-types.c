@@ -146,24 +146,6 @@ secret_service_flags_get_type (void)
     }
     return etype;
 }
-GType secret_search_flags_get_type (void) G_GNUC_CONST;
-
-GType
-secret_search_flags_get_type (void)
-{
-    static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
-        static const GFlagsValue values[] = {
-            { SECRET_SEARCH_NONE, "SECRET_SEARCH_NONE", "none" },
-            { SECRET_SEARCH_ALL, "SECRET_SEARCH_ALL", "all" },
-            { SECRET_SEARCH_UNLOCK, "SECRET_SEARCH_UNLOCK", "unlock" },
-            { SECRET_SEARCH_LOAD_SECRETS, "SECRET_SEARCH_LOAD_SECRETS", "load-secrets" },
-            { 0, NULL, NULL }
-        };
-        etype = g_flags_register_static (g_intern_static_string ("SecretSearchFlags"), values);
-    }
-    return etype;
-}
 #include "libsecret/secret-types.h"
 /* enumerations from "libsecret/secret-types.h" */
 GType secret_error_get_type (void) G_GNUC_CONST;
@@ -181,6 +163,24 @@ secret_error_get_type (void)
             { 0, NULL, NULL }
         };
         etype = g_enum_register_static (g_intern_static_string ("SecretError"), values);
+    }
+    return etype;
+}
+GType secret_search_flags_get_type (void) G_GNUC_CONST;
+
+GType
+secret_search_flags_get_type (void)
+{
+    static GType etype = 0;
+    if (G_UNLIKELY(etype == 0)) {
+        static const GFlagsValue values[] = {
+            { SECRET_SEARCH_NONE, "SECRET_SEARCH_NONE", "none" },
+            { SECRET_SEARCH_ALL, "SECRET_SEARCH_ALL", "all" },
+            { SECRET_SEARCH_UNLOCK, "SECRET_SEARCH_UNLOCK", "unlock" },
+            { SECRET_SEARCH_LOAD_SECRETS, "SECRET_SEARCH_LOAD_SECRETS", "load-secrets" },
+            { 0, NULL, NULL }
+        };
+        etype = g_flags_register_static (g_intern_static_string ("SecretSearchFlags"), values);
     }
     return etype;
 }

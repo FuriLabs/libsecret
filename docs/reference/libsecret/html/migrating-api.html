@@ -43,7 +43,7 @@
 	an encrypted fashion. They are not part of the 'secret', but instead
 	are a way to lookup a secret item.</p>
 <p>All attributes in libsecret are stored as strings. Sets of attributes
-	are represented by <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>s and the keys and values of 
+	are represented by <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>s and the keys and values of 
 	these hash tables are strings.</p>
 <p>libsecret is far more focused on schemas,
 	and encourages users to define a <a class="link" href="libsecret-SecretSchema.html#SecretSchema" title="SecretSchema"><span class="type">SecretSchema</span></a> for their password storage.
@@ -81,61 +81,61 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><span class="type">GnomeKeyringAttributeList</span></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of string keys and values</td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#GnomeKeyringAttributeList"><span class="type">GnomeKeyringAttributeList</span></a></td>
+<td>a <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of string keys and values</td>
 </tr>
 <tr>
-<td><span class="type">GnomeKeyringAttribute</span></td>
-<td>a key/value pair in a <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of strings</td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#GnomeKeyringAttribute"><span class="type">GnomeKeyringAttribute</span></a></td>
+<td>a key/value pair in a <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of strings</td>
 </tr>
 <tr>
-<td><span class="type">GnomeKeyringAttributeType</span></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#GnomeKeyringAttributeType"><span class="type">GnomeKeyringAttributeType</span></a></td>
 <td><a class="link" href="libsecret-SecretSchema.html#SecretSchemaAttributeType" title="enum SecretSchemaAttributeType"><span class="type">SecretSchemaAttributeType</span></a></td>
 </tr>
 <tr>
-<td><code class="literal">GNOME_KEYRING_ATTRIBUTE_TYPE_STRING</code></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#GNOME-KEYRING-ATTRIBUTE-TYPE-STRING:CAPS"><code class="literal">GNOME_KEYRING_ATTRIBUTE_TYPE_STRING</code></a></td>
 <td><a class="link" href="libsecret-SecretSchema.html#SECRET-SCHEMA-ATTRIBUTE-STRING:CAPS"><code class="literal">SECRET_SCHEMA_ATTRIBUTE_STRING</code></a></td>
 </tr>
 <tr>
-<td><code class="literal">GNOME_KEYRING_ATTRIBUTE_TYPE_UINT32</code></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#GNOME-KEYRING-ATTRIBUTE-TYPE-UINT32:CAPS"><code class="literal">GNOME_KEYRING_ATTRIBUTE_TYPE_UINT32</code></a></td>
 <td><a class="link" href="libsecret-SecretSchema.html#SECRET-SCHEMA-ATTRIBUTE-INTEGER:CAPS"><code class="literal">SECRET_SCHEMA_ATTRIBUTE_INTEGER</code></a></td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_index()</code></td>
-<td>use <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a> on the attributes hash table</td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-index"><code class="function">gnome_keyring_attribute_list_index()</code></a></td>
+<td>use <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a> on the attributes hash table</td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_get_string()</code></td>
-<td>use <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a> on the attributes hash table</td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-get-string"><code class="function">gnome_keyring_attribute_get_string()</code></a></td>
+<td>use <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a> on the attributes hash table</td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_get_uint32()</code></td>
-<td>no equivalent, use <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-get-uint32"><code class="function">gnome_keyring_attribute_get_uint32()</code></a></td>
+<td>no equivalent, use <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a>
 </td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_append_string()</code></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-append-string"><code class="function">gnome_keyring_attribute_list_append_string()</code></a></td>
 <td><a class="link" href="libsecret-Secret-Attributes.html#secret-attributes-build" title="secret_attributes_build ()"><code class="function">secret_attributes_build()</code></a></td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_append_uint32()</code></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-append-uint32"><code class="function">gnome_keyring_attribute_list_append_uint32()</code></a></td>
 <td><a class="link" href="libsecret-Secret-Attributes.html#secret-attributes-build" title="secret_attributes_build ()"><code class="function">secret_attributes_build()</code></a></td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_copy()</code></td>
-<td><a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-ref"><code class="function">g_hash_table_ref()</code></a></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-copy"><code class="function">gnome_keyring_attribute_list_copy()</code></a></td>
+<td><a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-ref"><code class="function">g_hash_table_ref()</code></a></td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_free()</code></td>
-<td><a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-unref"><code class="function">g_hash_table_unref()</code></a></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-free"><code class="function">gnome_keyring_attribute_list_free()</code></a></td>
+<td><a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-unref"><code class="function">g_hash_table_unref()</code></a></td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_index()</code></td>
-<td>no equivalent, use <a href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-index"><code class="function">gnome_keyring_attribute_list_index()</code></a></td>
+<td>no equivalent, use <a href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#g-hash-table-lookup"><code class="function">g_hash_table_lookup()</code></a>
 </td>
 </tr>
 <tr>
-<td><code class="function">gnome_keyring_attribute_list_new()</code></td>
+<td><a href="/usr/share/gtk-doc/html/gnome-keyring/gnome-keyring-Item-Attributes.html#gnome-keyring-attribute-list-new"><code class="function">gnome_keyring_attribute_list_new()</code></a></td>
 <td><a class="link" href="libsecret-Secret-Attributes.html#secret-attributes-build" title="secret_attributes_build ()"><code class="function">secret_attributes_build()</code></a></td>
 </tr>
 </tbody>
