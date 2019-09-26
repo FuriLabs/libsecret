@@ -30,4 +30,4 @@ index 662c41d..dd50de4 100644
 +	sleep(1);
  	g_object_unref (test->service);
  	secret_service_disconnect ();
- 	g_assert (test->service == NULL);
+ 	g_assert_null (test->service);
