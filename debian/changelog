@@ -1,8 +1,12 @@
-libsecret (0.19.1-1) UNRELEASED; urgency=medium
+libsecret (0.19.1-1) unstable; urgency=medium
 
   * New upstream release
+  * debian/libsecret-1.0.symbols: Add new symbols
+  * Build-Depend on dh-sequence-gir and dh-sequence-gnome
+  * Drop patches cherry-picked from 0.19
+  * Refresh 0004-tests-collection-add-setup-delay.patch
 
- -- Jeremy Bicha <jbicha@debian.org>  Thu, 26 Sep 2019 06:20:04 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 26 Sep 2019 06:38:13 -0400
 
 libsecret (0.18.8-2) unstable; urgency=medium
 
