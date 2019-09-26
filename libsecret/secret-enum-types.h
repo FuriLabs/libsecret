@@ -37,12 +37,12 @@ GType secret_schema_type_get_type (void) G_GNUC_CONST;
 /* enumerations from "libsecret/secret-service.h" */
 GType secret_service_flags_get_type (void) G_GNUC_CONST;
 #define SECRET_TYPE_SERVICE_FLAGS (secret_service_flags_get_type ())
-GType secret_search_flags_get_type (void) G_GNUC_CONST;
-#define SECRET_TYPE_SEARCH_FLAGS (secret_search_flags_get_type ())
 
 /* enumerations from "libsecret/secret-types.h" */
 GType secret_error_get_type (void) G_GNUC_CONST;
 #define SECRET_TYPE_ERROR (secret_error_get_type ())
+GType secret_search_flags_get_type (void) G_GNUC_CONST;
+#define SECRET_TYPE_SEARCH_FLAGS (secret_search_flags_get_type ())
 G_END_DECLS
 
 #endif /* __SECRET_ENUM_TYPES_H__ */

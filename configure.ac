@@ -1,8 +1,17 @@
 AC_PREREQ(2.63)
 
-AC_INIT([libsecret],[0.18.8],
+m4_define([libsecret_major_version], 0)
+m4_define([libsecret_minor_version], 19)
+m4_define([libsecret_micro_version], 1)
+m4_define([libsecret_version],
+          [libsecret_major_version.libsecret_minor_version.libsecret_micro_version])
+AC_INIT([libsecret],[libsecret_version],
         [https://gitlab.gnome.org/GNOME/libsecret/issues/],
         [libsecret])
+
+AC_SUBST(SECRET_MAJOR_VERSION, libsecret_major_version)
+AC_SUBST(SECRET_MINOR_VERSION, libsecret_minor_version)
+AC_SUBST(SECRET_MICRO_VERSION, libsecret_micro_version)
 
 dnl ****************************************************************************
 dnl Dependency versions
@@ -43,7 +52,8 @@ SECRET_AGE=0
 # -----------------------------------------------------------------------------
 
 AC_CONFIG_MACRO_DIR([build/m4])
-AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_AUX_DIR([build/litter])
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AM_INIT_AUTOMAKE([1.11 dist-xz no-dist-gzip tar-ustar foreign -Wno-portability subdir-objects])
 AM_SANITY_CHECK
 AC_CONFIG_HEADERS(config.h)
@@ -281,6 +291,7 @@ AC_CONFIG_FILES([
 	po/Makefile
 	libsecret/libsecret.pc
 	libsecret/libsecret-unstable.pc
+	libsecret/secret-version.h
 ])
 AC_OUTPUT
 
