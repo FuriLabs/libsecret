@@ -6,17 +6,17 @@ Source: libsecret
 Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Emilio Pozuelo Monfort <pochu@debian.org>, Jeremy Bicha <jbicha@debian.org>, Tim Lunn <tim@feathertop.org>
+Uploaders: Jeremy Bicha <jbicha@debian.org>, Tim Lunn <tim@feathertop.org>
 Build-Depends: debhelper-compat (= 12),
+               dh-sequence-gir,
+               dh-sequence-gnome,
                libglib2.0-dev (>= 2.44.0),
                libgcrypt20-dev (>= 1.2.2),
                libgirepository1.0-dev (>= 1.29),
-               gobject-introspection (>= 1.29),
                gtk-doc-tools (>= 1.9),
                valac (>= 0.17.2.12),
                python3-dbus (>= 1.2.12) | python3-dbus (<< 1.2.10),
                python3-gi,
-               gnome-pkg-tools,
                dbus <!nocheck>,
                gjs [!s390x] <!nocheck>
 Rules-Requires-Root: no
