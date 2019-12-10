@@ -1,3 +1,10 @@
+libsecret (0.19.1-2) UNRELEASED; urgency=medium
+
+  * debian/tests:
+    - make autopkgtests cross-test-friendly.
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 10 Dec 2019 10:05:17 +0100
+
 libsecret (0.19.1-1) unstable; urgency=medium
 
   * New upstream release
