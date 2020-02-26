@@ -3,6 +3,8 @@ libsecret (0.20.1-1) UNRELEASED; urgency=medium
   * debian/tests:
     - make autopkgtests cross-test-friendly.
   * New upstream release
+  * debian/libsecret-1-0.symbols:
+    - updated for the symbols added in the new version
 
  -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 26 Feb 2020 13:42:03 +0100
 
