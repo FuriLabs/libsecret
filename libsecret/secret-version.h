@@ -39,7 +39,7 @@
  *
  * The minor version of libsecret.
  */
-#define SECRET_MINOR_VERSION (19)
+#define SECRET_MINOR_VERSION (20)
 
 /**
  * SECRET_MICRO_VERSION:

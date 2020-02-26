@@ -1,7 +1,7 @@
 AC_PREREQ(2.63)
 
 m4_define([libsecret_major_version], 0)
-m4_define([libsecret_minor_version], 19)
+m4_define([libsecret_minor_version], 20)
 m4_define([libsecret_micro_version], 1)
 m4_define([libsecret_version],
           [libsecret_major_version.libsecret_minor_version.libsecret_micro_version])
@@ -79,7 +79,11 @@ PKG_PROG_PKG_CONFIG
 # i18n
 
 AM_GNU_GETTEXT([external])
+# FIXME: Remove AM_GNU_GETTEXT_VERSION once autoreconf supports REQUIRE_VERSION
 AM_GNU_GETTEXT_VERSION([0.19.8])
+m4_ifdef([AM_GNU_GETTEXT_REQUIRE_VERSION],[
+AM_GNU_GETTEXT_REQUIRE_VERSION([0.19.8])
+])
 
 GETTEXT_PACKAGE=libsecret
 AC_SUBST([GETTEXT_PACKAGE])
