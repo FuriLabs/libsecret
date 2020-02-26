@@ -7,6 +7,25 @@
 #ifndef SECRET_COMPILATION
 #define SECRET_COMPILATION
 #endif
+#include "libsecret/secret-backend.h"
+/* enumerations from "libsecret/secret-backend.h" */
+GType secret_backend_flags_get_type (void) G_GNUC_CONST;
+
+GType
+secret_backend_flags_get_type (void)
+{
+    static GType etype = 0;
+    if (G_UNLIKELY(etype == 0)) {
+        static const GEnumValue values[] = {
+            { SECRET_BACKEND_NONE, "SECRET_BACKEND_NONE", "none" },
+            { SECRET_BACKEND_OPEN_SESSION, "SECRET_BACKEND_OPEN_SESSION", "open-session" },
+            { SECRET_BACKEND_LOAD_COLLECTIONS, "SECRET_BACKEND_LOAD_COLLECTIONS", "load-collections" },
+            { 0, NULL, NULL }
+        };
+        etype = g_enum_register_static (g_intern_static_string ("SecretBackendFlags"), values);
+    }
+    return etype;
+}
 #include "libsecret/secret-collection.h"
 /* enumerations from "libsecret/secret-collection.h" */
 GType secret_collection_flags_get_type (void) G_GNUC_CONST;
@@ -160,6 +179,7 @@ secret_error_get_type (void)
             { SECRET_ERROR_IS_LOCKED, "SECRET_ERROR_IS_LOCKED", "is-locked" },
             { SECRET_ERROR_NO_SUCH_OBJECT, "SECRET_ERROR_NO_SUCH_OBJECT", "no-such-object" },
             { SECRET_ERROR_ALREADY_EXISTS, "SECRET_ERROR_ALREADY_EXISTS", "already-exists" },
+            { SECRET_ERROR_INVALID_FILE_FORMAT, "SECRET_ERROR_INVALID_FILE_FORMAT", "invalid-file-format" },
             { 0, NULL, NULL }
         };
         etype = g_enum_register_static (g_intern_static_string ("SecretError"), values);

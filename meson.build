@@ -1,11 +1,12 @@
 project('libsecret', 'c',
-  version: '0.19.1',
+  version: '0.20.1',
   license: 'GPL2+',
   meson_version: '>= 0.50',
 )
 
 gnome = import('gnome')
 i18n = import('i18n')
+pkg = import('pkgconfig')
 
 # API version
 api_version = '1.0.0'
@@ -24,6 +25,7 @@ with_gtkdoc = get_option('gtk_doc')
 
 # Some variables
 config_h_dir = include_directories('.')
+build_dir = include_directories('build')
 libsecret_prefix = get_option('prefix')
 datadir = get_option('datadir')
 includedir = get_option('includedir')
@@ -43,23 +45,10 @@ glib_deps = [
   dependency('gio-2.0', version: '>=' + min_glib_version),
   dependency('gio-unix-2.0', version: '>=' + min_glib_version),
 ]
-if with_gcrypt
-  min_libgcrypt_version = '1.2.2'
-  gcrypt_dep = dependency('libgcrypt', version: '>=' + min_libgcrypt_version, required: false)
-  if not gcrypt_dep.found()
-    libgcrypt_config = find_program('libgcrypt-config')
-    libgcrypt_version = run_command(libgcrypt_config, '--version').stdout().strip()
-    if (libgcrypt_version.version_compare('>' + libgcrypt_version))
-      error('@0@ requires at least gcrypt version @1@, but version found is @2@'
-              .format(meson.project_name(), min_libgcrypt_version, libgcrypt_version))
-    endif
-    message('gcrypt version: @0@'.format(libgcrypt_version))
-    gcrypt_dep = declare_dependency(
-      link_args: run_command(libgcrypt_config, '--libs').stdout().strip().split(),
-      compile_args: run_command(libgcrypt_config, '--cflags').stdout().strip().split(),
-    )
-  endif
-endif
+
+min_libgcrypt_version = '1.2.2'
+gcrypt_dep = dependency('libgcrypt', version: '>=' + min_libgcrypt_version,
+			required: with_gcrypt)
 
 # Libraries
 math = meson.get_compiler('c').find_library('m')
@@ -80,6 +69,10 @@ conf.set('WITH_DEBUG', enable_debug)
 conf.set('_DEBUG', enable_debug)
 conf.set('HAVE_MLOCK', meson.get_compiler('c').has_function('mlock'))
 configure_file(output: 'config.h', configuration: conf)
+
+# Test environment
+test_env = environment()
+test_env.set('abs_top_builddir', meson.build_root())
 
 # Subfolders
 subdir('po')

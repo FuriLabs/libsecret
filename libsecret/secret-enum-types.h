@@ -12,6 +12,10 @@
 
 G_BEGIN_DECLS
 
+/* enumerations from "libsecret/secret-backend.h" */
+GType secret_backend_flags_get_type (void) G_GNUC_CONST;
+#define SECRET_TYPE_BACKEND_FLAGS (secret_backend_flags_get_type ())
+
 /* enumerations from "libsecret/secret-collection.h" */
 GType secret_collection_flags_get_type (void) G_GNUC_CONST;
 #define SECRET_TYPE_COLLECTION_FLAGS (secret_collection_flags_get_type ())

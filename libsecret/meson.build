@@ -1,7 +1,9 @@
-installed_headers_subdir = 'libsecret-@0@'.format(api_version_major) / 'libsecret'
+installed_headers_subdir_base = 'libsecret-@0@'.format(api_version_major)
+installed_headers_subdir = installed_headers_subdir_base / 'libsecret'
 
 libsecret_sources = [
   'secret-attributes.c',
+  'secret-backend.c',
   'secret-collection.c',
   'secret-item.c',
   'secret-methods.c',
@@ -20,6 +22,7 @@ libsecret_sources = [
 libsecret_headers = [
   'secret.h',
   'secret-attributes.h',
+  'secret-backend.h',
   'secret-collection.h',
   'secret-item.h',
   'secret-password.h',
@@ -32,6 +35,14 @@ libsecret_headers = [
   'secret-types.h',
   'secret-value.h',
 ]
+
+if with_gcrypt
+  libsecret_sources += [
+    'secret-file-backend.c',
+    'secret-file-collection.c',
+    'secret-file-item.c',
+  ]
+endif
 
 version_numbers = meson.project_version().split('.')
 version_major = version_numbers[0].to_int()
@@ -96,6 +107,8 @@ libsecret_dep = declare_dependency(
 libsecret_gir_sources = [
   'secret-attributes.c',
   'secret-attributes.h',
+  'secret-backend.c',
+  'secret-backend.h',
   'secret-collection.c',
   'secret-collection.h',
   'secret-item.c',
@@ -144,35 +157,28 @@ if with_vapi
 endif
 
 # pkg-config
-pc_conf = configuration_data({
-  'prefix': libsecret_prefix,
-  'exec_prefix': '${prefix}',
-  'libdir': '${prefix}' / get_option('libdir'),
-  'includedir': '${prefix}' / get_option('includedir'),
-  'datarootdir': '${prefix}' / get_option('datadir'),
-  'datadir': '${datarootdir}',
-  'sysconfdir': '${prefix}' / get_option('sysconfdir'),
-  'SECRET_MAJOR': api_version_major,
-  'VERSION': meson.project_version(),
-})
+libsecret_pc_variables = [
+  'exec_prefix=${prefix}',
+  'datarootdir=@0@'.format('${prefix}' / get_option('datadir')),
+  'datadir=${datarootdir}',
+  'sysconfdir=@0@'.format('${prefix}' / get_option('sysconfdir'))
+]
 
-configure_file(
-  input: 'libsecret.pc.in',
-  output: 'libsecret-@0@.pc'.format(api_version_major),
-  configuration: pc_conf,
-  install: true,
-  install_dir: libsecret_prefix / libdir / 'pkgconfig',
-)
-configure_file(
-  input: 'libsecret-unstable.pc.in',
-  output: '@BASENAME@',
-  configuration: pc_conf,
-  install: true,
-  install_dir: libsecret_prefix / libdir / 'pkgconfig',
-)
+pkg.generate(libsecret,
+	     description: 'GObject bindings for Secret Service API',
+	     name: 'libsecret-@0@'.format(api_version_major),
+	     subdirs: installed_headers_subdir_base,
+	     variables: libsecret_pc_variables,
+	     requires: glib_deps)
+
+pkg.generate(description: 'GObject bindings for Secret Service API (Unstable)',
+	     name: 'libsecret-unstable',
+	     variables: libsecret_pc_variables,
+	     extra_cflags: '-DSECRET_WITH_UNSTABLE',
+	     requires: libsecret)
 
 # Tests
-mock_cflags = [
+test_cflags = [
   libsecret_cflags,
   '-DSRCDIR="@0@"'.format(meson.source_root()),
 ]
@@ -180,7 +186,7 @@ mock_cflags = [
 mock_service_lib = static_library('mock-service',
   'mock-service.c',
   dependencies: glib_deps,
-  c_args: mock_cflags,
+  c_args: test_cflags,
   include_directories: config_h_dir,
 )
 
@@ -197,6 +203,12 @@ test_names = [
   'test-collection',
 ]
 
+if with_gcrypt
+  test_names += [
+    'test-file-collection',
+  ]
+endif
+
 foreach _test : test_names
 
   test_bin = executable(_test,
@@ -204,7 +216,7 @@ foreach _test : test_names
     dependencies: libsecret_dep,
     link_with: mock_service_lib,
     include_directories: config_h_dir,
-    c_args: libsecret_cflags,
+    c_args: test_cflags,
   )
 
   test(_test, test_bin)

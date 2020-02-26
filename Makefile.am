@@ -52,7 +52,10 @@ dist-hook: dist-check-valac
 distcleancheck_listfiles =  \
        find . -name '*.gc[dn][oa]' -prune -o -type f -print
 
-TESTS_ENVIRONMENT = LD_LIBRARY_PATH=$(builddir)/.libs GI_TYPELIB_PATH=$(builddir)
+TESTS_ENVIRONMENT = \
+	LD_LIBRARY_PATH=$(builddir)/.libs \
+	GI_TYPELIB_PATH=$(builddir) \
+	abs_top_builddir=$(abs_top_builddir)
 TEST_EXTENSIONS = .py .js
 
 # Default executable tests
@@ -117,6 +120,7 @@ AM_CPPFLAGS = \
 bin_PROGRAMS =
 BUILT_SOURCES =
 check_PROGRAMS =
+check_SCRIPTS =
 DISTCLEANFILES =
 lib_LTLIBRARIES =
 man_MANS =
@@ -182,7 +186,8 @@ EXTRA_DIST = \
 	build/valgrind \
 	build/tap-gtester \
 	build/tap-unittest \
-	$(VALGRIND_SUPPRESSIONS)
+	$(VALGRIND_SUPPRESSIONS) \
+	$(check_SCRIPTS)
 
 include egg/Makefile.am
 include libsecret/Makefile.am
