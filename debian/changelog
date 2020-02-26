@@ -1,8 +1,8 @@
-libsecret (0.20.1-1) UNRELEASED; urgency=medium
+libsecret (0.20.1-1) unstable; urgency=medium
 
+  * New upstream release
   * debian/tests:
     - make autopkgtests cross-test-friendly.
-  * New upstream release
   * debian/libsecret-1-0.symbols:
     - updated for the symbols added in the new version
 
