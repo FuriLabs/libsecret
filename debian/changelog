@@ -1,3 +1,13 @@
+libsecret (0.20.2-2) unstable; urgency=medium
+
+  * Only BD on gjs on architectures where it's successfully built (aka release
+    architectures)
+  * debian/control.in: Bump Standards-Version to 4.5.0 (no further changes)
+  * Regenerate the documentation during the build and add libglib2.0-doc to
+    the BD
+
+ -- Laurent Bigonville <bigon@debian.org>  Fri, 24 Apr 2020 08:44:19 +0200
+
 libsecret (0.20.2-1) unstable; urgency=medium
 
   * New upstream release
