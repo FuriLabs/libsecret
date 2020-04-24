@@ -1,8 +1,10 @@
-libsecret (0.20.3-1) UNRELEASED; urgency=medium
+libsecret (0.20.3-1) unstable; urgency=medium
 
   * New upstream release
+  * debian/rules: Disable the parallel execution of the tests.
+    That should reduce the likeliness of race conditions in them
 
- -- Laurent Bigonville <bigon@debian.org>  Fri, 24 Apr 2020 08:58:09 +0200
+ -- Laurent Bigonville <bigon@debian.org>  Fri, 24 Apr 2020 12:17:12 +0200
 
 libsecret (0.20.2-2) unstable; urgency=medium
 
