@@ -1,3 +1,9 @@
+libsecret (0.20.3-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Laurent Bigonville <bigon@debian.org>  Fri, 24 Apr 2020 08:58:09 +0200
+
 libsecret (0.20.2-2) unstable; urgency=medium
 
   * Only BD on gjs on architectures where it's successfully built (aka release
