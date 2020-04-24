@@ -9,9 +9,11 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs -Wl,--as-needed
 # We can't depend on gjs being available on s390x. See #909536
 # Also, some tests hang on Launchpad builders on s390x
 override_dh_autoreconf:
-ifneq (,$(filter $(DEB_HOST_ARCH),s390x))
+ifeq (,$(filter $(DEB_HOST_ARCH),amd64 arm64 armel armhf i386 mips64el mipsel ppc64el s390x))
 	sed -i -e '/^TESTS/s/\$$(JS_TESTS)//' libsecret/Makefile.am
+endif
 ifeq (yes,$(shell dpkg-vendor --is Ubuntu && echo yes))
+ifneq (,$(filter $(DEB_HOST_ARCH),s390x))
 	sed -i -e '/^TESTS/s/\$$(PY_TESTS)//' -e '/^TESTS/s/\$$(VALA_TESTS)//' \
 		 libsecret/Makefile.am
 endif
