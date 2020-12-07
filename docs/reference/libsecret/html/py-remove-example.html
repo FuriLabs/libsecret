@@ -8,7 +8,7 @@
 <link rel="up" href="py-examples.html" title="Python examples">
 <link rel="prev" href="py-lookup-example.html" title="Python example: Lookup a password">
 <link rel="next" href="vala-examples.html" title="Vala examples">
-<meta name="generator" content="GTK-Doc V1.29 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -43,14 +43,14 @@
 6
 7
 8</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="usertype">from</span><span class="normal"> gi</span><span class="symbol">.</span><span class="normal">repository import Secret</span>
+        <td class="listing_code"><pre class="programlisting"><span class="n">from</span> <span class="n">gi</span><span class="p">.</span><span class="n">repository</span> <span class="n">import</span> <span class="n">Secret</span>
 
-<span class="usertype">def</span><span class="normal"> </span><span class="function">on_password_clear</span><span class="symbol">(</span><span class="normal">source</span><span class="symbol">,</span><span class="normal"> result</span><span class="symbol">,</span><span class="normal"> unused</span><span class="symbol">):</span>
-<span class="normal">    removed </span><span class="symbol">=</span><span class="normal"> Secret</span><span class="symbol">.</span><span class="function">password_clear_finish</span><span class="symbol">(</span><span class="normal">result</span><span class="symbol">)</span>
-<span class="preproc">    # removed</span><span class="normal"> will be true </span><span class="keyword">if</span><span class="normal"> the password was removed</span>
+<span class="n">def</span> <span class="n">on_password_clear</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">unused</span><span class="p">)</span><span class="o">:</span>
+	<span class="n">removed</span> <span class="o">=</span> <span class="n">Secret</span><span class="p">.</span><span class="n">password_clear_finish</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+	<span class="cp"># removed will be true if the password was removed</span>
 
-<span class="normal">Secret</span><span class="symbol">.</span><span class="function">password_clear</span><span class="symbol">(</span><span class="normal">EXAMPLE_SCHEMA</span><span class="symbol">,</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"number"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"8"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"even"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"true"</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">                                              None</span><span class="symbol">,</span><span class="normal"> on_password_clear</span><span class="symbol">)</span></pre></td>
+<span class="n">Secret</span><span class="p">.</span><span class="n">password_clear</span><span class="p">(</span><span class="n">EXAMPLE_SCHEMA</span><span class="p">,</span> <span class="p">{</span> <span class="s">&quot;number&quot;</span><span class="o">:</span> <span class="s">&quot;8&quot;</span><span class="p">,</span> <span class="s">&quot;even&quot;</span><span class="o">:</span> <span class="s">&quot;true&quot;</span> <span class="p">},</span>
+                                              <span class="n">None</span><span class="p">,</span> <span class="n">on_password_clear</span><span class="p">)</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -67,10 +67,10 @@
 2
 3
 4</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="usertype">from</span><span class="normal"> gi</span><span class="symbol">.</span><span class="normal">repository import Secret</span>
+        <td class="listing_code"><pre class="programlisting"><span class="n">from</span> <span class="n">gi</span><span class="p">.</span><span class="n">repository</span> <span class="n">import</span> <span class="n">Secret</span>
 
-<span class="normal">removed </span><span class="symbol">=</span><span class="normal"> Secret</span><span class="symbol">.</span><span class="function">password_clear_sync</span><span class="symbol">(</span><span class="normal">EXAMPLE_SCHEMA</span><span class="symbol">,</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"number"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"8"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"even"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"true"</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span><span class="normal"> None</span><span class="symbol">)</span>
-<span class="preproc"># removed</span><span class="normal"> will be true </span><span class="keyword">if</span><span class="normal"> the password was removed</span></pre></td>
+<span class="n">removed</span> <span class="o">=</span> <span class="n">Secret</span><span class="p">.</span><span class="n">password_clear_sync</span><span class="p">(</span><span class="n">EXAMPLE_SCHEMA</span><span class="p">,</span> <span class="p">{</span> <span class="s">&quot;number&quot;</span><span class="o">:</span> <span class="s">&quot;8&quot;</span><span class="p">,</span> <span class="s">&quot;even&quot;</span><span class="o">:</span> <span class="s">&quot;true&quot;</span> <span class="p">},</span> <span class="n">None</span><span class="p">)</span>
+<span class="cp"># removed will be true if the password was removed</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -78,6 +78,6 @@
 
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.29</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>

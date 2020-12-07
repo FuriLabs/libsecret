@@ -8,7 +8,7 @@
 <link rel="up" href="examples.html" title="Part II. Examples">
 <link rel="prev" href="examples.html" title="Part II. Examples">
 <link rel="next" href="c-store-example.html" title="C example: Store a password">
-<meta name="generator" content="GTK-Doc V1.29 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -62,29 +62,29 @@
 21
 22
 23</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="comment">/* in a header: */</span>
+        <td class="listing_code"><pre class="programlisting"><span class="cm">/* in a header: */</span>
 
-<span class="keyword">const</span><span class="normal"> <a href="libsecret-SecretSchema.html#SecretSchema">SecretSchema</a> </span><span class="symbol">*</span><span class="normal"> </span><span class="function">example_get_schema</span><span class="normal"> </span><span class="symbol">(</span><span class="type">void</span><span class="symbol">)</span><span class="normal"> G_GNUC_CONST</span><span class="symbol">;</span>
+<span class="k">const</span> <span class="n">SecretSchema</span> <span class="o">*</span> <span class="nf">example_get_schema</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">G_GNUC_CONST</span><span class="p">;</span>
 
-<span class="preproc">#define</span><span class="normal"> </span><span class="usertype">EXAMPLE_SCHEMA</span><span class="normal">  </span><span class="function">example_get_schema</span><span class="normal"> </span><span class="symbol">()</span>
+<span class="cp">#define EXAMPLE_SCHEMA  example_get_schema ()</span>
 
 
-<span class="comment">/* in a .c file: */</span>
+<span class="cm">/* in a .c file: */</span>
 
-<span class="keyword">const</span><span class="normal"> <a href="libsecret-SecretSchema.html#SecretSchema">SecretSchema</a> </span><span class="symbol">*</span>
-<span class="function">example_get_schema</span><span class="normal"> </span><span class="symbol">(</span><span class="type">void</span><span class="symbol">)</span>
-<span class="cbracket">{</span>
-<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">SecretSchema</span><span class="normal"> the_schema </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span>
-<span class="normal">        </span><span class="string">"org.example.Password"</span><span class="symbol">,</span><span class="normal"> <a href="libsecret-SecretSchema.html#SECRET-SCHEMA-NONE:CAPS">SECRET_SCHEMA_NONE</a></span><span class="symbol">,</span>
-<span class="normal">        </span><span class="cbracket">{</span>
-<span class="normal">            </span><span class="cbracket">{</span><span class="normal">  </span><span class="string">"number"</span><span class="symbol">,</span><span class="normal"> <a href="libsecret-SecretSchema.html#SECRET-SCHEMA-ATTRIBUTE-INTEGER:CAPS">SECRET_SCHEMA_ATTRIBUTE_INTEGER</a> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">            </span><span class="cbracket">{</span><span class="normal">  </span><span class="string">"string"</span><span class="symbol">,</span><span class="normal"> <a href="libsecret-SecretSchema.html#SECRET-SCHEMA-ATTRIBUTE-STRING:CAPS">SECRET_SCHEMA_ATTRIBUTE_STRING</a> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">            </span><span class="cbracket">{</span><span class="normal">  </span><span class="string">"even"</span><span class="symbol">,</span><span class="normal"> <a href="libsecret-SecretSchema.html#SECRET-SCHEMA-ATTRIBUTE-BOOLEAN:CAPS">SECRET_SCHEMA_ATTRIBUTE_BOOLEAN</a> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">            </span><span class="cbracket">{</span><span class="normal">  </span><span class="string">"NULL"</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">        </span><span class="cbracket">}</span>
-<span class="normal">    </span><span class="cbracket">}</span><span class="symbol">;</span>
-<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">the_schema</span><span class="symbol">;</span>
-<span class="cbracket">}</span></pre></td>
+<span class="k">const</span> <span class="n">SecretSchema</span> <span class="o">*</span>
+<span class="nf">example_get_schema</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">static</span> <span class="k">const</span> <span class="n">SecretSchema</span> <span class="n">the_schema</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s">&quot;org.example.Password&quot;</span><span class="p">,</span> <span class="n">SECRET_SCHEMA_NONE</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="p">{</span>  <span class="s">&quot;number&quot;</span><span class="p">,</span> <span class="n">SECRET_SCHEMA_ATTRIBUTE_INTEGER</span> <span class="p">},</span>
+			<span class="p">{</span>  <span class="s">&quot;string&quot;</span><span class="p">,</span> <span class="n">SECRET_SCHEMA_ATTRIBUTE_STRING</span> <span class="p">},</span>
+			<span class="p">{</span>  <span class="s">&quot;even&quot;</span><span class="p">,</span> <span class="n">SECRET_SCHEMA_ATTRIBUTE_BOOLEAN</span> <span class="p">},</span>
+			<span class="p">{</span>  <span class="s">&quot;NULL&quot;</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="n">the_schema</span><span class="p">;</span>
+<span class="p">}</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -95,6 +95,6 @@
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.29</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>
