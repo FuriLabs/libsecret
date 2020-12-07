@@ -46,7 +46,7 @@
  *
  * The micro version of libsecret.
  */
-#define SECRET_MICRO_VERSION (3)
+#define SECRET_MICRO_VERSION (4)
 
 /**
  * SECRET_CHECK_VERSION:

@@ -8,7 +8,7 @@
 <link rel="up" href="js-examples.html" title="Javascript examples">
 <link rel="prev" href="js-lookup-example.html" title="Javascript example: Lookup a password">
 <link rel="next" href="py-examples.html" title="Python examples">
-<meta name="generator" content="GTK-Doc V1.29 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,16 +45,16 @@
 8
 9
 10</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="keyword">const</span><span class="normal"> Secret </span><span class="symbol">=</span><span class="normal"> imports</span><span class="symbol">.</span><span class="normal">gi</span><span class="symbol">.</span><span class="normal">Secret</span><span class="symbol">;</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">const</span> <span class="n">Secret</span> <span class="o">=</span> <span class="n">imports</span><span class="p">.</span><span class="n">gi</span><span class="p">.</span><span class="n">Secret</span><span class="p">;</span>
 
-<span class="usertype">function</span><span class="normal"> </span><span class="function">on_password_clear</span><span class="symbol">(</span><span class="normal">source</span><span class="symbol">,</span><span class="normal"> result</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
-<span class="normal">    </span><span class="usertype">var</span><span class="normal"> removed </span><span class="symbol">=</span><span class="normal"> Secret</span><span class="symbol">.</span><span class="function">password_clear_finish</span><span class="symbol">(</span><span class="normal">result</span><span class="symbol">);</span>
-<span class="normal">    </span><span class="comment">/* removed will be true if the password was removed */</span>
-<span class="cbracket">}</span>
+<span class="n">function</span> <span class="nf">on_password_clear</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">removed</span> <span class="o">=</span> <span class="n">Secret</span><span class="p">.</span><span class="n">password_clear_finish</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+	<span class="cm">/* removed will be true if the password was removed */</span>
+<span class="p">}</span>
 
-<span class="comment">/* The attributes used to lookup which password to remove should conform to the schema. */</span>
-<span class="normal">Secret</span><span class="symbol">.</span><span class="function">password_clear</span><span class="symbol">(</span><span class="normal">EXAMPLE_SCHEMA</span><span class="symbol">,</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"number"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"8"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"even"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"true"</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">                      null</span><span class="symbol">,</span><span class="normal"> on_password_clear</span><span class="symbol">);</span></pre></td>
+<span class="cm">/* The attributes used to lookup which password to remove should conform to the schema. */</span>
+<span class="n">Secret</span><span class="p">.</span><span class="n">password_clear</span><span class="p">(</span><span class="n">EXAMPLE_SCHEMA</span><span class="p">,</span> <span class="p">{</span> <span class="s">&quot;number&quot;</span><span class="o">:</span> <span class="s">&quot;8&quot;</span><span class="p">,</span> <span class="s">&quot;even&quot;</span><span class="o">:</span> <span class="s">&quot;true&quot;</span> <span class="p">},</span>
+                      <span class="n">null</span><span class="p">,</span> <span class="n">on_password_clear</span><span class="p">);</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -75,14 +75,14 @@
 6
 7
 8</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="keyword">const</span><span class="normal"> Secret </span><span class="symbol">=</span><span class="normal"> imports</span><span class="symbol">.</span><span class="normal">gi</span><span class="symbol">.</span><span class="normal">Secret</span><span class="symbol">;</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">const</span> <span class="n">Secret</span> <span class="o">=</span> <span class="n">imports</span><span class="p">.</span><span class="n">gi</span><span class="p">.</span><span class="n">Secret</span><span class="p">;</span>
 
-<span class="comment">/* The attributes used to lookup which password to remove should conform to the schema. */</span>
-<span class="usertype">var</span><span class="normal"> removed </span><span class="symbol">=</span><span class="normal"> Secret</span><span class="symbol">.</span><span class="function">password_clear_sync</span><span class="symbol">(</span><span class="normal">EXAMPLE_SCHEMA</span><span class="symbol">,</span>
-<span class="normal">                                         </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"number"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"8"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"even"</span><span class="symbol">:</span><span class="normal"> </span><span class="string">"true"</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
-<span class="normal">                                         null</span><span class="symbol">);</span>
+<span class="cm">/* The attributes used to lookup which password to remove should conform to the schema. */</span>
+<span class="n">var</span> <span class="n">removed</span> <span class="o">=</span> <span class="n">Secret</span><span class="p">.</span><span class="n">password_clear_sync</span><span class="p">(</span><span class="n">EXAMPLE_SCHEMA</span><span class="p">,</span>
+                                         <span class="p">{</span> <span class="s">&quot;number&quot;</span><span class="o">:</span> <span class="s">&quot;8&quot;</span><span class="p">,</span> <span class="s">&quot;even&quot;</span><span class="o">:</span> <span class="s">&quot;true&quot;</span> <span class="p">},</span>
+                                         <span class="n">null</span><span class="p">);</span>
 
-<span class="comment">/* removed will be true if the password was removed */</span></pre></td>
+<span class="cm">/* removed will be true if the password was removed */</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -90,6 +90,6 @@
 
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.29</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>

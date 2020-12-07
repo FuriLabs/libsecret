@@ -36,7 +36,7 @@ libsecret_headers = [
   'secret-value.h',
 ]
 
-if with_gcrypt
+if get_option('gcrypt')
   libsecret_sources += [
     'secret-file-backend.c',
     'secret-file-collection.c',
@@ -69,14 +69,14 @@ _enums_generated = gnome.mkenums('secret-enum-types',
   c_template: 'secret-enum-types.c.template',
   h_template: 'secret-enum-types.h.template',
   install_header: true,
-  install_dir: libsecret_prefix / includedir / installed_headers_subdir,
+  install_dir: get_option('includedir') / installed_headers_subdir,
 )
 
 libsecret_dependencies = [
   glib_deps,
 ]
 
-if with_gcrypt
+if get_option('gcrypt')
   libsecret_dependencies += gcrypt_dep
 endif
 
@@ -104,56 +104,58 @@ libsecret_dep = declare_dependency(
 )
 
 # GObject Introspection
-libsecret_gir_sources = [
-  'secret-attributes.c',
-  'secret-attributes.h',
-  'secret-backend.c',
-  'secret-backend.h',
-  'secret-collection.c',
-  'secret-collection.h',
-  'secret-item.c',
-  'secret-item.h',
-  'secret-methods.c',
-  'secret-password.c',
-  'secret-password.h',
-  'secret-paths.c',
-  'secret-paths.h',
-  'secret-prompt.c',
-  'secret-prompt.h',
-  'secret-retrievable.c',
-  'secret-retrievable.h',
-  'secret-schema.c',
-  'secret-schema.h',
-  'secret-schemas.c',
-  'secret-schemas.h',
-  'secret-service.c',
-  'secret-service.h',
-  'secret-types.h',
-  'secret-value.c',
-  'secret-value.h',
-]
-libsecret_gir_sources += version_h
-libsecret_gir_sources += _enums_generated
+if get_option('introspection')
+  libsecret_gir_sources = [
+    'secret-attributes.c',
+    'secret-attributes.h',
+    'secret-backend.c',
+    'secret-backend.h',
+    'secret-collection.c',
+    'secret-collection.h',
+    'secret-item.c',
+    'secret-item.h',
+    'secret-methods.c',
+    'secret-password.c',
+    'secret-password.h',
+    'secret-paths.c',
+    'secret-paths.h',
+    'secret-prompt.c',
+    'secret-prompt.h',
+    'secret-retrievable.c',
+    'secret-retrievable.h',
+    'secret-schema.c',
+    'secret-schema.h',
+    'secret-schemas.c',
+    'secret-schemas.h',
+    'secret-service.c',
+    'secret-service.h',
+    'secret-types.h',
+    'secret-value.c',
+    'secret-value.h',
+  ]
+  libsecret_gir_sources += version_h
+  libsecret_gir_sources += _enums_generated
 
-libsecret_gir = gnome.generate_gir(libsecret,
-  sources: libsecret_gir_sources,
-  namespace: 'Secret',
-  nsversion: api_version_major,
-  export_packages: 'libsecret-@0@'.format(api_version_major),
-  includes: [ 'GObject-2.0', 'Gio-2.0' ],
-  header: 'libsecret/secret.h',
-  extra_args: [ '-D SECRET_COMPILATION'],
-  install: true,
-)
-
-# Vapi
-if with_vapi
-  libsecret_vapi = gnome.generate_vapi('libsecret-@0@'.format(api_version_major),
-    sources: libsecret_gir[0],
-    metadata_dirs: meson.source_root() / 'libsecret',
-    packages: [ 'gobject-2.0', 'gio-2.0' ],
+  libsecret_gir = gnome.generate_gir(libsecret,
+    sources: libsecret_gir_sources,
+    namespace: 'Secret',
+    nsversion: api_version_major,
+    export_packages: 'libsecret-@0@'.format(api_version_major),
+    includes: [ 'GObject-2.0', 'Gio-2.0' ],
+    header: 'libsecret/secret.h',
+    extra_args: [ '-D SECRET_COMPILATION'],
     install: true,
   )
+
+  # Vapi
+  if get_option('vapi')
+    libsecret_vapi = gnome.generate_vapi('libsecret-@0@'.format(api_version_major),
+      sources: libsecret_gir[0],
+      metadata_dirs: meson.source_root() / 'libsecret',
+      packages: [ 'gobject-2.0', 'gio-2.0' ],
+      install: true,
+    )
+  endif
 endif
 
 # pkg-config
@@ -165,17 +167,19 @@ libsecret_pc_variables = [
 ]
 
 pkg.generate(libsecret,
-	     description: 'GObject bindings for Secret Service API',
-	     name: 'libsecret-@0@'.format(api_version_major),
-	     subdirs: installed_headers_subdir_base,
-	     variables: libsecret_pc_variables,
-	     requires: glib_deps)
+  description: 'GObject bindings for Secret Service API',
+  name: 'libsecret-@0@'.format(api_version_major),
+  subdirs: installed_headers_subdir_base,
+  variables: libsecret_pc_variables,
+  requires: glib_deps,
+)
 
 pkg.generate(description: 'GObject bindings for Secret Service API (Unstable)',
-	     name: 'libsecret-unstable',
-	     variables: libsecret_pc_variables,
-	     extra_cflags: '-DSECRET_WITH_UNSTABLE',
-	     requires: libsecret)
+  name: 'libsecret-unstable',
+  variables: libsecret_pc_variables,
+  extra_cflags: '-DSECRET_WITH_UNSTABLE',
+  requires: libsecret,
+)
 
 # Tests
 test_cflags = [
@@ -183,13 +187,36 @@ test_cflags = [
   '-DSRCDIR="@0@"'.format(meson.source_root()),
 ]
 
-mock_service_lib = static_library('mock-service',
+mock_service_lib = library('mock-service',
   'mock-service.c',
   dependencies: glib_deps,
   c_args: test_cflags,
   include_directories: config_h_dir,
 )
 
+if get_option('introspection')
+  mock_service_gir = gnome.generate_gir(mock_service_lib,
+    sources: files('mock-service.c', 'mock-service.h'),
+    namespace: 'MockService',
+    nsversion: '0',
+    export_packages: 'mock-service-0',
+    includes: [ 'GObject-2.0', 'Gio-2.0' ],
+    header: 'libsecret/mock-service.h',
+  )
+
+  if get_option('vapi')
+    mock_service_vapi = gnome.generate_vapi('mock-service-0',
+      sources: mock_service_gir[0],
+      packages: [
+        'gobject-2.0',
+        'gio-2.0',
+        libsecret_vapi,
+      ],
+    )
+  endif
+endif
+
+# C tests
 test_names = [
   'test-attributes',
   'test-value',
@@ -203,7 +230,7 @@ test_names = [
   'test-collection',
 ]
 
-if with_gcrypt
+if get_option('gcrypt')
   test_names += [
     'test-file-collection',
   ]
@@ -219,5 +246,92 @@ foreach _test : test_names
     c_args: test_cflags,
   )
 
-  test(_test, test_bin)
+  test(_test, test_bin,
+    suite: 'libsecret',
+  )
 endforeach
+
+# Tests with introspection
+if get_option('introspection')
+  # env to be used in tests that use the typelib,
+  # to make sure they find the one for MockService
+  test_typelib_env = environment()
+  test_typelib_env.set('GI_TYPELIB_PATH', meson.current_build_dir())
+  test_typelib_env.set('LD_LIBRARY_PATH', meson.current_build_dir())
+
+  # Python Tests
+  pytest_names = [
+    'test-py-lookup',
+    'test-py-clear',
+    'test-py-store',
+  ]
+
+  pymod = import('python')
+  python3 = pymod.find_installation()
+  foreach _pytest : pytest_names
+    py_test = meson.current_source_dir() / _pytest + '.py'
+
+    test(_pytest, python3,
+      args: py_test,
+      depends: mock_service_gir[1],
+      env: test_typelib_env,
+      suite: 'python',
+    )
+  endforeach
+
+  # JS Tests
+  jstest_names = [
+    'test-js-lookup',
+    'test-js-clear',
+    'test-js-store',
+  ]
+
+  gjs = find_program('gjs', required: false)
+  if gjs.found()
+    foreach _jstest : jstest_names
+      js_test = meson.current_source_dir() / _jstest + '.js'
+
+      test(_jstest, gjs,
+        args: js_test,
+        depends: mock_service_gir[1],
+        env: test_typelib_env,
+        suite: 'javascript',
+      )
+    endforeach
+  else
+    message('GJS not found. Not running Javascript tests')
+  endif
+
+  # Vala tests
+  if get_option('vapi')
+    # FIXME: the "native" kwarg should be added once we can require meson ≥0.54
+    add_languages('vala')
+    valac = meson.get_compiler('vala')
+
+    valatest_names = [
+      'test-vala-lang',
+      'test-vala-unstable',
+    ]
+
+    foreach _valatest : valatest_names
+      test_bin = executable(_valatest,
+        '@0@.vala'.format(_valatest),
+        dependencies: [
+          glib_deps,
+          valac.find_library('glib-2.0'),
+          valac.find_library('gio-2.0'),
+          libsecret_vapi,
+          mock_service_vapi,
+        ],
+        link_with: mock_service_lib,
+        include_directories: config_h_dir,
+        c_args: test_cflags,
+      )
+
+      test(_valatest, test_bin,
+        suite: 'vala',
+      )
+    endforeach
+  endif
+
+endif
