@@ -12,8 +12,8 @@ Build-Depends: debhelper-compat (= 12),
                libgirepository1.0-dev (>= 1.29),
                gtk-doc-tools (>= 1.9),
                valac (>= 0.17.2.12),
-               python3-dbus (>= 1.2.12) | python3-dbus (<< 1.2.10),
-               python3-gi,
+               python3-dbus (>= 1.2.12) <!nocheck> | python3-dbus (<< 1.2.10) <!nocheck>,
+               python3-gi <!nocheck>,
                dbus <!nocheck>,
                gjs [amd64 arm64 armel armhf i386 mips64el mipsel ppc64el s390x] <!nocheck>
 Rules-Requires-Root: no
