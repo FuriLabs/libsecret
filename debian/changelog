@@ -1,3 +1,20 @@
+libsecret (0.20.4-2) unstable; urgency=medium
+
+  * Team upload
+
+  [ Helmut Grohne ]
+  * Annotate Python build depends with <!nocheck>
+    These dependencies are not satisfiable when cross-building, but
+    they're only needed for testing. (Closes: #981258)
+
+  [ Simon McVittie ]
+  * Simplify python3-dbus dependency.
+    We no longer need to avoid the regression in 1.2.10, because it has
+    not been current in any suite for a long time.
+  * Standards-Version: 4.5.1 (no changes required)
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 04 Feb 2021 13:46:00 +0000
+
 libsecret (0.20.4-1) unstable; urgency=medium
 
   * New upstream release
