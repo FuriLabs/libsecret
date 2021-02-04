@@ -6,7 +6,7 @@ Source: libsecret
 Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Jeremy Bicha <jbicha@debian.org>, Tim Lunn <tim@feathertop.org>
+Uploaders: Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.org>, Tim Lunn <tim@feathertop.org>
 Build-Depends: debhelper-compat (= 12),
                dh-sequence-gir,
                dh-sequence-gnome,
@@ -16,7 +16,7 @@ Build-Depends: debhelper-compat (= 12),
                libgirepository1.0-dev (>= 1.29),
                gtk-doc-tools (>= 1.9),
                valac (>= 0.17.2.12),
-               python3-dbus (>= 1.2.12) <!nocheck> | python3-dbus (<< 1.2.10) <!nocheck>,
+               python3-dbus <!nocheck>,
                python3-gi <!nocheck>,
                dbus <!nocheck>,
                gjs [amd64 arm64 armel armhf i386 mips64el mipsel ppc64el s390x] <!nocheck>
