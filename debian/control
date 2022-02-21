@@ -10,6 +10,7 @@ Uploaders: Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.or
 Build-Depends: debhelper-compat (= 12),
                dh-sequence-gir,
                dh-sequence-gnome,
+               gi-docgen,
                libglib2.0-dev (>= 2.44.0),
                libglib2.0-doc (>= 2.44.0),
                libgcrypt20-dev (>= 1.2.2),
