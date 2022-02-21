@@ -7,7 +7,7 @@ Section: devel
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.org>, Tim Lunn <tim@feathertop.org>
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
                dh-sequence-gir,
                dh-sequence-gnome,
                gi-docgen,
