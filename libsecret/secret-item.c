@@ -29,36 +29,30 @@
 #include <glib/gi18n-lib.h>
 
 /**
- * SECTION:secret-item
- * @title: SecretItem
- * @short_description: A secret item
+ * SecretItem:
+ *
+ * A secret item
  *
  * #SecretItem represents a secret item stored in the Secret Service.
  *
- * Each item has a value, represented by a #SecretValue, which can be
- * retrieved by secret_item_get_secret() or set by secret_item_set_secret().
+ * Each item has a value, represented by a [struct@Value], which can be
+ * retrieved by [method@Item.get_secret] or set by [method@Item.set_secret].
  * The item is only available when the item is not locked.
  *
- * Items can be locked or unlocked using the secret_service_lock() or
- * secret_service_unlock() functions. The Secret Service may not be able to
+ * Items can be locked or unlocked using the [method@Service.lock] or
+ * [method@Service.unlock] functions. The Secret Service may not be able to
  * unlock individual items, and may unlock an entire collection when a single
  * item is unlocked.
  *
  * Each item has a set of attributes, which are used to locate the item later.
  * These are not stored or transferred in a secure manner. Each attribute has
- * a string name and a string value. Use secret_service_search() to search for
- * items based on their attributes, and secret_item_set_attributes() to change
+ * a string name and a string value. Use [method@Service.search] to search for
+ * items based on their attributes, and [method@Item.set_attributes] to change
  * the attributes associated with an item.
  *
- * Items can be created with secret_item_create() or secret_service_store().
+ * Items can be created with [func@Item.create] or [method@Service.store].
  *
  * Stability: Stable
- */
-
-/**
- * SecretItem:
- *
- * A proxy object representing a secret item in the Secret Service.
  */
 
 /**
@@ -81,7 +75,7 @@
  * @SECRET_ITEM_CREATE_NONE: no flags
  * @SECRET_ITEM_CREATE_REPLACE: replace an item with the same attributes.
  *
- * Flags for secret_item_create().
+ * Flags for [func@Item.create].
  */
 
 enum {
@@ -335,9 +329,9 @@ secret_item_class_init (SecretItemClass *klass)
 	proxy_class->g_properties_changed = secret_item_properties_changed;
 
 	/**
-	 * SecretItem:service:
+	 * SecretItem:service: (attributes org.gtk.Property.get=secret_item_get_service)
 	 *
-	 * The #SecretService object that this item is associated with and
+	 * The [class@Service] object that this item is associated with and
 	 * uses to interact with the actual D-Bus Secret Service.
 	 */
 	g_object_class_install_property (gobject_class, PROP_SERVICE,
@@ -345,7 +339,7 @@ secret_item_class_init (SecretItemClass *klass)
 	                                 SECRET_TYPE_SERVICE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * SecretItem:flags:
+	 * SecretItem:flags: (attributes org.gtk.Property.get=secret_item_get_flags)
 	 *
 	 * A set of flags describing which parts of the secret item have
 	 * been initialized.
@@ -359,7 +353,9 @@ secret_item_class_init (SecretItemClass *klass)
 	 * SecretItem:attributes: (type GLib.HashTable(utf8,utf8)) (transfer full)
 	 *
 	 * The attributes set on this item. Attributes are used to locate an
-	 * item. They are not guaranteed to be stored or transferred securely.
+	 * item.
+	 *
+	 * They are not guaranteed to be stored or transferred securely.
 	 */
 	g_object_class_override_property (gobject_class, PROP_ATTRIBUTES, "attributes");
 
@@ -370,18 +366,20 @@ secret_item_class_init (SecretItemClass *klass)
 	 *
 	 * Setting this property will result in the label of the item being
 	 * set asynchronously. To properly track the changing of the label use the
-	 * secret_item_set_label() function.
+	 * [method@Item.set_label] function.
 	 */
 	g_object_class_override_property (gobject_class, PROP_LABEL, "label");
 
 	/**
-	 * SecretItem:locked:
+	 * SecretItem:locked: (attributes org.gtk.Property.get=secret_item_get_locked)
 	 *
-	 * Whether the item is locked or not. An item may not be independently
-	 * lockable separate from other items in its collection.
+	 * Whether the item is locked or not.
 	 *
-	 * To lock or unlock a item use the secret_service_lock() or
-	 * secret_service_unlock() functions.
+	 * An item may not be independently lockable separate from other items in
+	 * its collection.
+	 *
+	 * To lock or unlock a item use the [method@Service.lock] or
+	 * [method@Service.unlock] functions.
 	 */
 	g_object_class_install_property (gobject_class, PROP_LOCKED,
 	           g_param_spec_boolean ("locked", "Locked", "Item locked",
@@ -594,8 +592,10 @@ secret_item_async_initable_iface (GAsyncInitableIface *iface)
  * secret_item_refresh:
  * @self: the collection
  *
- * Refresh the properties on this item. This fires off a request to
- * refresh, and the properties will be updated later.
+ * Refresh the properties on this item.
+ *
+ * This fires off a request to refresh, and the properties will be updated
+ * later.
  *
  * Calling this method is not normally necessary, as the secret service
  * will notify the client when properties change.
@@ -718,12 +718,12 @@ item_properties_new (const gchar *label,
 /**
  * secret_item_create:
  * @collection: a secret collection to create this item in
- * @schema: (allow-none): the schema for the attributes
+ * @schema: (nullable): the schema for the attributes
  * @attributes: (element-type utf8 utf8): attributes for the new item
  * @label: label for the new item
  * @value: secret value for the new item
  * @flags: flags for the creation of the new item
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @callback: called when the operation completes
  * @user_data: data to pass to the callback
  *
@@ -734,7 +734,7 @@ item_properties_new (const gchar *label,
  * instead of creating a new one.
  *
  * This method may block indefinitely and should not be used in user interface
- * threads. The secret service may prompt the user. secret_service_prompt()
+ * threads. The secret service may prompt the user. [method@Service.prompt]
  * will be used to handle any prompts that are required.
  */
 void
@@ -790,7 +790,7 @@ secret_item_create (SecretCollection *collection,
  * Finish operation to create a new item in the secret service.
  *
  * Returns: (transfer full): the new item, which should be unreferenced
- *          with g_object_unref()
+ *   with [method@GObject.Object.unref]
  */
 SecretItem *
 secret_item_create_finish (GAsyncResult *result,
@@ -813,12 +813,12 @@ secret_item_create_finish (GAsyncResult *result,
 /**
  * secret_item_create_sync:
  * @collection: a secret collection to create this item in
- * @schema: (allow-none): the schema for the attributes
+ * @schema: (nullable): the schema for the attributes
  * @attributes: (element-type utf8 utf8): attributes for the new item
  * @label: label for the new item
  * @value: secret value for the new item
  * @flags: flags for the creation of the new item
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place an error on failure
  *
  * Create a new item in the secret service.
@@ -828,11 +828,11 @@ secret_item_create_finish (GAsyncResult *result,
  * instead of creating a new one.
  *
  * This method may block indefinitely and should not be used in user interface
- * threads. The secret service may prompt the user. secret_service_prompt()
+ * threads. The secret service may prompt the user. [method@Service.prompt]
  * will be used to handle any prompts that are required.
  *
  * Returns: (transfer full): the new item, which should be unreferenced
- *          with g_object_unref()
+ *   with [method@GObject.Object.unref]
  */
 SecretItem *
 secret_item_create_sync (SecretCollection *collection,
@@ -908,7 +908,7 @@ on_item_deleted (GObject *source,
  * Delete this item.
  *
  * This method returns immediately and completes asynchronously. The secret
- * service may prompt the user. secret_service_prompt() will be used to handle
+ * service may prompt the user. [method@Service.prompt] will be used to handle
  * any prompts that show up.
  */
 void
@@ -964,14 +964,14 @@ secret_item_delete_finish (SecretItem *self,
 /**
  * secret_item_delete_sync:
  * @self: an item
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place an error on failure
  *
  * Delete this secret item.
  *
  * This method may block indefinitely and should not be used in user
  * interface threads. The secret service may prompt the user.
- * secret_service_prompt() will be used to handle any prompts that show up.
+ * [method@Service.prompt] will be used to handle any prompts that show up.
  *
  * Returns: whether the item was successfully deleted or not
  */
@@ -1003,13 +1003,13 @@ secret_item_delete_sync (SecretItem *self,
 }
 
 /**
- * secret_item_get_flags:
+ * secret_item_get_flags:  (attributes org.gtk.Method.get_property=flags)
  * @self: the secret item proxy
  *
  * Get the flags representing what features of the #SecretItem proxy
  * have been initialized.
  *
- * Use secret_item_load_secret() to initialize further features
+ * Use [method@Item.load_secret] to initialize further features
  * and change the flags.
  *
  * Returns: the flags for features initialized
@@ -1033,7 +1033,7 @@ secret_item_get_flags (SecretItem *self)
 }
 
 /**
- * secret_item_get_service:
+ * secret_item_get_service: (attributes org.gtk.Method.get_property=service)
  * @self: an item
  *
  * Get the Secret Service object that this item was created with.
@@ -1052,13 +1052,15 @@ secret_item_get_service (SecretItem *self)
  * secret_item_get_secret:
  * @self: an item
  *
- * Get the secret value of this item. If this item is locked or the secret
- * has not yet been loaded then this will return %NULL.
+ * Get the secret value of this item.
  *
- * To load the secret call the secret_item_load_secret() method.
+ * If this item is locked or the secret has not yet been loaded then this will
+ * return %NULL.
  *
- * Returns: (transfer full) (allow-none): the secret value which should be
- *          released with secret_value_unref(), or %NULL
+ * To load the secret call the [method@Item.load_secret] method.
+ *
+ * Returns: (transfer full) (nullable): the secret value which should be
+ *   released with [method@Value.unref], or %NULL
  */
 SecretValue *
 secret_item_get_secret (SecretItem *self)
@@ -1189,7 +1191,7 @@ secret_item_load_secret (SecretItem *self,
  * Complete asynchronous operation to load the secret value of this item.
  *
  * The newly loaded secret value can be accessed by calling
- * secret_item_get_secret().
+ * [method@Item.get_secret].
  *
  * Returns: whether the secret item successfully loaded or not
  */
@@ -1211,7 +1213,7 @@ secret_item_load_secret_finish (SecretItem *self,
 /**
  * secret_item_load_secret_sync:
  * @self: an item
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place error on failure
  *
  * Load the secret value of this item.
@@ -1388,13 +1390,13 @@ on_loads_secrets_session (GObject *source,
 /**
  * secret_item_load_secrets:
  * @items: (element-type Secret.Item): the items to retrieve secrets for
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @callback: called when the operation completes
  * @user_data: data to pass to the callback
  *
  * Load the secret values for a secret item stored in the service.
  *
- * The @items must all have the same SecretItem::service property.
+ * The @items must all have the same [property@Item:service] property.
  *
  * This function returns immediately and completes asynchronously.
  */
@@ -1483,12 +1485,12 @@ secret_item_load_secrets_finish (GAsyncResult *result,
 /**
  * secret_item_load_secrets_sync:
  * @items: (element-type Secret.Item): the items to retrieve secrets for
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place an error on failure
  *
  * Load the secret values for a secret item stored in the service.
  *
- * The @items must all have the same SecretItem::service property.
+ * The @items must all have the same [property@Item:service] property.
  *
  * This method may block indefinitely and should not be used in user interface
  * threads.
@@ -1588,7 +1590,7 @@ on_set_ensure_session (GObject *source,
  * secret_item_set_secret:
  * @self: an item
  * @value: a new secret value
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @callback: called when the operation completes
  * @user_data: data to pass to the callback
  *
@@ -1652,7 +1654,7 @@ secret_item_set_secret_finish (SecretItem *self,
  * secret_item_set_secret_sync:
  * @self: an item
  * @value: a new secret value
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place error on failure
  *
  * Set the secret value of this item.
@@ -1698,7 +1700,7 @@ secret_item_set_secret_sync (SecretItem *self,
  * @self: an item
  *
  * Gets the name of the schema that this item was stored with. This is also
- * available at the <literal>xdg:schema</literal> attribute.
+ * available at the `xdg:schema` attribute.
  *
  * Returns: (nullable) (transfer full): the schema name
  */
@@ -1730,11 +1732,11 @@ secret_item_get_schema_name (SecretItem *self)
  * or transferred securely by the secret service.
  *
  * Do not modify the attributes returned by this method. Use
- * secret_item_set_attributes() instead.
+ * [method@Item.set_attributes] instead.
  *
  * Returns: (transfer full) (element-type utf8 utf8): a new reference
- *          to the attributes, which should not be modified, and
- *          released with g_hash_table_unref()
+ *   to the attributes, which should not be modified, and
+ *   released with [func@GLib.HashTable.unref]
  */
 GHashTable *
 secret_item_get_attributes (SecretItem *self)
@@ -1756,9 +1758,9 @@ secret_item_get_attributes (SecretItem *self)
 /**
  * secret_item_set_attributes:
  * @self: an item
- * @schema: (allow-none): the schema for the attributes
+ * @schema: (nullable): the schema for the attributes
  * @attributes: (element-type utf8 utf8): a new set of attributes
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @callback: called when the asynchronous operation completes
  * @user_data: data to pass to the callback
  *
@@ -1820,9 +1822,9 @@ secret_item_set_attributes_finish (SecretItem *self,
 /**
  * secret_item_set_attributes_sync:
  * @self: an item
- * @schema: (allow-none): the schema for the attributes
+ * @schema: (nullable): the schema for the attributes
  * @attributes: (element-type utf8 utf8): a new set of attributes
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place error on failure
  *
  * Set the attributes of this item.
@@ -1865,7 +1867,7 @@ secret_item_set_attributes_sync (SecretItem *self,
  *
  * Get the label of this item.
  *
- * Returns: (transfer full): the label, which should be freed with g_free()
+ * Returns: (transfer full): the label, which should be freed with [func@GLib.free]
  */
 gchar *
 secret_item_get_label (SecretItem *self)
@@ -1888,7 +1890,7 @@ secret_item_get_label (SecretItem *self)
  * secret_item_set_label:
  * @self: an item
  * @label: a new label
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @callback: called when the operation completes
  * @user_data: data to pass to the callback
  *
@@ -1938,7 +1940,7 @@ secret_item_set_label_finish (SecretItem *self,
  * secret_item_set_label_sync:
  * @self: an item
  * @label: a new label
- * @cancellable: optional cancellation object
+ * @cancellable: (nullable): optional cancellation object
  * @error: location to place error on failure
  *
  * Set the label of this item.
@@ -1994,8 +1996,10 @@ secret_item_get_locked (SecretItem *self)
  * secret_item_get_created:
  * @self: an item
  *
- * Get the created date and time of the item. The return value is
- * the number of seconds since the unix epoch, January 1st 1970.
+ * Get the created date and time of the item.
+ *
+ * The return value is the number of seconds since the unix epoch, January 1st
+ * 1970.
  *
  * Returns: the created date and time
  */
@@ -2020,8 +2024,10 @@ secret_item_get_created (SecretItem *self)
  * secret_item_get_modified:
  * @self: an item
  *
- * Get the modified date and time of the item. The return value is
- * the number of seconds since the unix epoch, January 1st 1970.
+ * Get the modified date and time of the item.
+ *
+ * The return value is the number of seconds since the unix epoch, January 1st
+ * 1970.
  *
  * Returns: the modified date and time
  */
