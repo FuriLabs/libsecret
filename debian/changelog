@@ -1,4 +1,4 @@
-libsecret (0.20.5-1) UNRELEASED; urgency=medium
+libsecret (0.20.5-1) unstable; urgency=medium
 
   * New upstream release
     - The new TPM2 based secret storage is disabled by default in this release
