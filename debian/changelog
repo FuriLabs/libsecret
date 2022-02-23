@@ -1,3 +1,9 @@
+libsecret (0.20.5-2) unstable; urgency=medium
+
+  * Have libsecret-1-dev Depend on libgcrypt20-dev per its pkgconfig
+
+ -- Jeremy Bicha <jeremy.bicha@canonical.com>  Wed, 23 Feb 2022 07:28:04 -0500
+
 libsecret (0.20.5-1) unstable; urgency=medium
 
   * New upstream release
