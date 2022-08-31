@@ -1,3 +1,13 @@
+libsecret (0.20.5-3) unstable; urgency=medium
+
+  * Team upload
+  * Update list of architectures that can run gjs-based tests
+    - Remove armel, which is likely to lose gjs support with the move to
+      mozjs102 (see #1018076)
+    - Add riscv64
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 31 Aug 2022 11:05:48 +0100
+
 libsecret (0.20.5-2) unstable; urgency=medium
 
   * Have libsecret-1-dev Depend on libgcrypt20-dev per its pkgconfig
