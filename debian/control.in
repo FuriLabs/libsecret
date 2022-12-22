@@ -45,7 +45,6 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          libsecret-common
-Breaks: seahorse (<< 3.10)
 Multi-Arch: same
 Description: Secret store
  Library for storing and retrieving passwords and other secrets.
