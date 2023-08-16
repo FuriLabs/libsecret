@@ -625,16 +625,34 @@ on_init_service (GObject *source,
 	g_clear_object (&task);
 }
 
+typedef struct {
+	GAsyncReadyCallback callback;
+	gpointer user_data;
+} InitBaseClosure;
+
+static void
+secret_collection_async_initable_init_async (GAsyncInitable *initable,
+                                             int io_priority,
+                                             GCancellable *cancellable,
+                                             GAsyncReadyCallback callback,
+                                             gpointer user_data);
+
 static void
 on_init_base (GObject *source,
               GAsyncResult *result,
               gpointer user_data)
 {
-	GTask *task = G_TASK (user_data);
-	GCancellable *cancellable = g_task_get_cancellable (task);
+	GTask *base_task = G_TASK (user_data);
+	InitBaseClosure *base = g_task_get_task_data (base_task);
+	GCancellable *cancellable = g_task_get_cancellable (base_task);
+	GTask *task;
 	SecretCollection *self = SECRET_COLLECTION (source);
 	GDBusProxy *proxy = G_DBUS_PROXY (self);
 	GError *error = NULL;
+
+	task = g_task_new (source, cancellable, base->callback, base->user_data);
+	g_task_set_source_tag (task, secret_collection_async_initable_init_async);
+	g_clear_object (&base_task);
 
 	if (!secret_collection_async_initable_parent_iface->init_finish (G_ASYNC_INITABLE (self),
 	                                                                 result, &error)) {
@@ -665,9 +683,15 @@ secret_collection_async_initable_init_async (GAsyncInitable *initable,
                                              gpointer user_data)
 {
 	GTask *task;
+	InitBaseClosure *base;
 
-	task = g_task_new (initable, cancellable, callback, user_data);
+	task = g_task_new (initable, cancellable, NULL, NULL);
 	g_task_set_source_tag (task, secret_collection_async_initable_init_async);
+
+	base = g_new0 (InitBaseClosure, 1);
+	base->callback = callback;
+	base->user_data = user_data;
+	g_task_set_task_data (task, base, g_free);
 
 	secret_collection_async_initable_parent_iface->init_async (initable,
 	                                                           io_priority,
@@ -716,7 +740,7 @@ items_closure_free (gpointer data)
 {
 	ItemsClosure *closure = data;
 	g_hash_table_unref (closure->items);
-	g_slice_free (ItemsClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -792,7 +816,7 @@ secret_collection_load_items (SecretCollection *self,
 
 	task = g_task_new (self, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_collection_load_items);
-	closure = g_slice_new0 (ItemsClosure);
+	closure = g_new0 (ItemsClosure, 1);
 	closure->items = items_table_new ();
 	g_task_set_task_data (task, closure, items_closure_free);
 
@@ -949,7 +973,7 @@ create_closure_free (gpointer data)
 	g_clear_object (&closure->collection);
 	g_hash_table_unref (closure->properties);
 	g_free (closure->alias);
-	g_slice_free (CreateClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -1079,7 +1103,7 @@ secret_collection_create (SecretService *service,
 
 	task = g_task_new (NULL, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_collection_create);
-	closure = g_slice_new0 (CreateClosure);
+	closure = g_new0 (CreateClosure, 1);
 	closure->properties = _secret_collection_properties_new (label);
 	closure->alias = g_strdup (alias);
 	closure->flags = flags;
@@ -1216,7 +1240,7 @@ search_closure_free (gpointer data)
 	g_object_unref (closure->collection);
 	g_hash_table_unref (closure->items);
 	g_strfreev (closure->paths);
-	g_slice_free (SearchClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -1420,7 +1444,7 @@ secret_collection_search (SecretCollection *self,
 
 	task = g_task_new (self, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_collection_search);
-	search = g_slice_new0 (SearchClosure);
+	search = g_new0 (SearchClosure, 1);
 	search->collection = g_object_ref (self);
 	search->items = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
 	search->flags = flags;
@@ -1989,7 +2013,7 @@ read_closure_free (gpointer data)
 {
 	ReadClosure *read = data;
 	g_free (read->alias);
-	g_slice_free (ReadClosure, read);
+	g_free (read);
 }
 
 static void
@@ -2117,7 +2141,7 @@ secret_collection_for_alias (SecretService *service,
 
 	task = g_task_new (NULL, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_collection_for_alias);
-	read = g_slice_new0 (ReadClosure);
+	read = g_new0 (ReadClosure, 1);
 	read->alias = g_strdup (alias);
 	read->flags = flags;
 	g_task_set_task_data (task, read, read_closure_free);
@@ -2142,7 +2166,7 @@ secret_collection_for_alias (SecretService *service,
  * Finish an asynchronous operation to lookup which collection is assigned
  * to an alias.
  *
- * Returns: (transfer full): the collection, or %NULL if none assigned to the alias
+ * Returns: (transfer full) (nullable): the collection, or %NULL if none assigned to the alias
  */
 SecretCollection *
 secret_collection_for_alias_finish (GAsyncResult *result,
@@ -2178,7 +2202,7 @@ secret_collection_for_alias_finish (GAsyncResult *result,
  *
  * This method may block and should not be used in user interface threads.
  *
- * Returns: (transfer full): the collection, or %NULL if none assigned to the alias
+ * Returns: (transfer full) (nullable): the collection, or %NULL if none assigned to the alias
  */
 SecretCollection *
 secret_collection_for_alias_sync (SecretService *service,
