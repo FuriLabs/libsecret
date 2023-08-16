@@ -1,14 +1,15 @@
-libsecret (0.21.0-1) UNRELEASED; urgency=medium
+libsecret (0.21.0-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Add armel back to the list of architectures that can run gjs tests
 
   [ Debian Janitor ]
   * Add debian/upstream/metadata
   * Update standards version to 4.6.2, no changes needed
   * Remove constraints unnecessary since buster (oldstable)
 
-  [ Jeremy Bícha ]
-  * New upstream release
-
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 16 Aug 2023 15:23:41 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 16 Aug 2023 15:31:33 -0400
 
 libsecret (0.20.5-3) unstable; urgency=medium
 
