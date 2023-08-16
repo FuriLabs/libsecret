@@ -55,7 +55,7 @@ search_closure_free (gpointer data)
 	g_variant_unref (closure->attributes);
 	g_strfreev (closure->unlocked);
 	g_strfreev (closure->locked);
-	g_slice_free (SearchClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -98,49 +98,14 @@ on_search_secrets (GObject *source,
 }
 
 static void
-on_search_unlocked (GObject *source,
-                    GAsyncResult *result,
-                    gpointer user_data)
+secret_search_load_or_complete (GTask *task,
+                                SearchClosure *search)
 {
-	GTask *task = G_TASK (user_data);
-	SearchClosure *search = g_task_get_task_data (task);
 	GCancellable *cancellable = g_task_get_cancellable (task);
 	GList *items;
-
-	/* Note that we ignore any unlock failure */
-	secret_service_unlock_finish (search->service, result, NULL, NULL);
 
 	/* If loading secrets ... locked items automatically ignored */
 	if (search->flags & SECRET_SEARCH_LOAD_SECRETS) {
-		items = g_hash_table_get_values (search->items);
-		secret_item_load_secrets (items, cancellable,
-		                          on_search_secrets, g_object_ref (task));
-		g_list_free (items);
-
-	/* No additional options, just complete */
-	} else {
-		g_task_return_boolean (task, TRUE);
-	}
-
-	g_clear_object (&task);
-}
-
-static void
-secret_search_unlock_load_or_complete (GTask *task,
-                                       SearchClosure *search)
-{
-	GCancellable *cancellable = g_task_get_cancellable (task);
-	GList *items;
-
-	/* If unlocking then unlock all the locked items */
-	if (search->flags & SECRET_SEARCH_UNLOCK) {
-		items = search_closure_build_items (search, search->locked);
-		secret_service_unlock (search->service, items, cancellable,
-		                       on_search_unlocked, g_object_ref (task));
-		g_list_free_full (items, g_object_unref);
-
-	/* If loading secrets ... locked items automatically ignored */
-	} else if (search->flags & SECRET_SEARCH_LOAD_SECRETS) {
 		items = g_hash_table_get_values (search->items);
 		secret_item_load_secrets (items, cancellable,
 		                          on_search_secrets, g_object_ref (task));
@@ -176,7 +141,7 @@ on_search_loaded (GObject *source,
 
 	/* We're done loading, lets go to the next step */
 	if (closure->loading == 0)
-		secret_search_unlock_load_or_complete (task, closure);
+		secret_search_load_or_complete (task, closure);
 
 	g_clear_object (&task);
 }
@@ -201,6 +166,44 @@ search_load_item_async (SecretService *self,
 }
 
 static void
+load_items (SearchClosure *closure,
+            GTask *task)
+{
+	SecretService *self = closure->service;
+	gint want = 1;
+	gint count = 0;
+	gint i;
+
+	if (closure->flags & SECRET_SEARCH_ALL)
+		want = G_MAXINT;
+
+	for (i = 0; count < want && closure->unlocked[i] != NULL; i++, count++)
+		search_load_item_async (self, task, closure, closure->unlocked[i]);
+	for (i = 0; count < want && closure->locked[i] != NULL; i++, count++)
+		search_load_item_async (self, task, closure, closure->locked[i]);
+
+	/* No items loading, complete operation now */
+	if (closure->loading == 0)
+		secret_search_load_or_complete (task, closure);
+}
+
+static void
+on_unlock_paths (GObject *source,
+                 GAsyncResult *result,
+                 gpointer user_data)
+{
+	GTask *task = G_TASK (user_data);
+	SearchClosure *closure = g_task_get_task_data (task);
+	SecretService *self = closure->service;
+
+	/* Note that we ignore any unlock failure */
+	secret_service_unlock_dbus_paths_finish (self, result, NULL, NULL);
+
+	load_items (closure, task);
+	g_clear_object (&task);
+}
+
+static void
 on_search_paths (GObject *source,
                  GAsyncResult *result,
                  gpointer user_data)
@@ -209,27 +212,21 @@ on_search_paths (GObject *source,
 	SearchClosure *closure = g_task_get_task_data (task);
 	SecretService *self = closure->service;
 	GError *error = NULL;
-	gint want = 1;
-	gint count;
-	gint i;
 
 	secret_service_search_for_dbus_paths_finish (self, result, &closure->unlocked,
 	                                             &closure->locked, &error);
 	if (error == NULL) {
-		want = 1;
-		if (closure->flags & SECRET_SEARCH_ALL)
-			want = G_MAXINT;
-		count = 0;
+		/* If unlocking then unlock all the locked items */
+		if (closure->flags & SECRET_SEARCH_UNLOCK) {
+			GCancellable *cancellable = g_task_get_cancellable (task);
+			const gchar **const_locked = (const gchar**) closure->locked;
 
-		for (i = 0; count < want && closure->unlocked[i] != NULL; i++, count++)
-			search_load_item_async (self, task, closure, closure->unlocked[i]);
-		for (i = 0; count < want && closure->locked[i] != NULL; i++, count++)
-			search_load_item_async (self, task, closure, closure->locked[i]);
-
-		/* No items loading, complete operation now */
-		if (closure->loading == 0)
-			secret_search_unlock_load_or_complete (task, closure);
-
+			secret_service_unlock_dbus_paths (self, const_locked, cancellable,
+			                                  on_unlock_paths,
+			                                  g_steal_pointer (&task));
+		} else {
+			load_items (closure, task);
+		}
 	} else {
 		g_task_return_error (task, g_steal_pointer (&error));
 	}
@@ -317,7 +314,7 @@ secret_service_search (SecretService *service,
 
 	task = g_task_new (service, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_service_search);
-	closure = g_slice_new0 (SearchClosure);
+	closure = g_new0 (SearchClosure, 1);
 	closure->items = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
 	closure->flags = flags;
 	closure->attributes = _secret_attributes_to_variant (attributes, schema_name);
@@ -478,6 +475,10 @@ secret_service_search_sync (SecretService *service,
 		return NULL;
 	}
 
+	if (flags & SECRET_SEARCH_UNLOCK)
+		secret_service_unlock_dbus_paths_sync (service, (const gchar**) locked_paths,
+						       cancellable, NULL, NULL);
+
 	ret = TRUE;
 
 	want = 1;
@@ -511,9 +512,6 @@ secret_service_search_sync (SecretService *service,
 	items = g_list_concat (items, g_list_copy (locked));
 	items = g_list_concat (items, g_list_copy (unlocked));
 	items = g_list_reverse (items);
-
-	if (flags & SECRET_SEARCH_UNLOCK)
-		secret_service_unlock_sync (service, locked, cancellable, NULL, NULL);
 
 	if (flags & SECRET_SEARCH_LOAD_SECRETS)
 		secret_item_load_secrets_sync (items, NULL, NULL);
@@ -583,7 +581,7 @@ xlock_closure_free (gpointer data)
 	g_ptr_array_free (closure->paths, TRUE);
 	g_strfreev (closure->xlocked);
 	g_hash_table_unref (closure->objects);
-	g_slice_free (XlockClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -667,7 +665,7 @@ service_xlock_async (SecretService *service,
 
 	task = g_task_new (service, cancellable, callback, user_data);
 	g_task_set_source_tag (task, service_xlock_async);
-	xlock = g_slice_new0 (XlockClosure);
+	xlock = g_new0 (XlockClosure, 1);
 	xlock->objects = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
 	xlock->locking = locking;
 	xlock->paths = g_ptr_array_new ();
@@ -969,7 +967,7 @@ store_closure_free (gpointer data)
 	g_free (store->collection_path);
 	secret_value_unref (store->value);
 	g_hash_table_unref (store->properties);
-	g_slice_free (StoreClosure, store);
+	g_free (store);
 }
 
 static void
@@ -1172,7 +1170,7 @@ secret_service_store (SecretService *service,
 
 	task = g_task_new (service, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_service_store);
-	store = g_slice_new0 (StoreClosure);
+	store = g_new0 (StoreClosure, 1);
 	store->collection_path = _secret_util_collection_to_path (collection);
 	store->value = secret_value_ref (value);
 	store->properties = g_hash_table_new_full (g_str_hash, g_str_equal, NULL,
@@ -1581,7 +1579,7 @@ delete_closure_free (gpointer data)
 	if (closure->service)
 		g_object_unref (closure->service);
 	g_variant_unref (closure->attributes);
-	g_slice_free (DeleteClosure, closure);
+	g_free (closure);
 }
 
 static void
@@ -1708,7 +1706,7 @@ secret_service_clear (SecretService *service,
 
 	task = g_task_new (service, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_service_clear);
-	closure = g_slice_new0 (DeleteClosure);
+	closure = g_new0 (DeleteClosure, 1);
 	closure->attributes = _secret_attributes_to_variant (attributes, schema_name);
 	g_variant_ref_sink (closure->attributes);
 	g_task_set_task_data (task, closure, delete_closure_free);
@@ -1822,7 +1820,7 @@ set_closure_free (gpointer data)
 	SetClosure *set = data;
 	g_free (set->alias);
 	g_free (set->collection_path);
-	g_slice_free (SetClosure, set);
+	g_free (set);
 }
 
 static void
@@ -1907,7 +1905,7 @@ secret_service_set_alias (SecretService *service,
 
 	task = g_task_new (service, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_service_set_alias);
-	set = g_slice_new0 (SetClosure);
+	set = g_new0 (SetClosure, 1);
 	set->alias = g_strdup (alias);
 
 	if (collection) {

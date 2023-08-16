@@ -512,16 +512,34 @@ on_init_service (GObject *source,
 	g_clear_object (&task);
 }
 
+typedef struct {
+	GAsyncReadyCallback callback;
+	gpointer user_data;
+} InitBaseClosure;
+
+static void
+secret_item_async_initable_init_async (GAsyncInitable *initable,
+                                       int io_priority,
+                                       GCancellable *cancellable,
+                                       GAsyncReadyCallback callback,
+                                       gpointer user_data);
+
 static void
 on_init_base (GObject *source,
               GAsyncResult *result,
               gpointer user_data)
 {
-	GTask *task = G_TASK (user_data);
-	GCancellable *cancellable = g_task_get_cancellable (task);
+	GTask *base_task = G_TASK (user_data);
+	InitBaseClosure *base = g_task_get_task_data (base_task);
+	GCancellable *cancellable = g_task_get_cancellable (base_task);
+	GTask *task;
 	SecretItem *self = SECRET_ITEM (source);
 	GDBusProxy *proxy = G_DBUS_PROXY (self);
 	GError *error = NULL;
+
+	task = g_task_new (source, cancellable, base->callback, base->user_data);
+	g_task_set_source_tag (task, secret_item_async_initable_init_async);
+	g_clear_object (&base_task);
 
 	if (!secret_item_async_initable_parent_iface->init_finish (G_ASYNC_INITABLE (self),
 	                                                           result, &error)) {
@@ -552,9 +570,15 @@ secret_item_async_initable_init_async (GAsyncInitable *initable,
                                        gpointer user_data)
 {
 	GTask *task;
+	InitBaseClosure *base;
 
-	task = g_task_new (initable, cancellable, callback, user_data);
+	task = g_task_new (initable, cancellable, NULL, NULL);
 	g_task_set_source_tag (task, secret_item_async_initable_init_async);
+
+	base = g_new0 (InitBaseClosure, 1);
+	base->callback = callback;
+	base->user_data = user_data;
+	g_task_set_task_data (task, base, g_free);
 
 	secret_item_async_initable_parent_iface->init_async (initable, io_priority,
 	                                                     cancellable,
@@ -1317,7 +1341,7 @@ loads_closure_free (gpointer data)
 	if (loads->service)
 		g_object_unref (loads->service);
 	g_hash_table_destroy (loads->items);
-	g_slice_free (LoadsClosure, loads);
+	g_free (loads);
 }
 
 static void
@@ -1419,7 +1443,7 @@ secret_item_load_secrets (GList *items,
 
 	task = g_task_new (NULL, cancellable, callback, user_data);
 	g_task_set_source_tag (task, secret_item_load_secrets);
-	loads = g_slice_new0 (LoadsClosure);
+	loads = g_new0 (LoadsClosure, 1);
 	loads->items = g_hash_table_new_full (g_str_hash, g_str_equal,
 	                                      g_free, g_object_unref);
 
