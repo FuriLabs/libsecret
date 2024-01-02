@@ -8,8 +8,6 @@ export DPKG_GENSYMBOLS_CHECK_LEVEL = 4
 	dh $@
 
 override_dh_auto_test:
-ifeq (, $(filter nocheck, $(DEB_BUILD_OPTIONS)))
 	env -u LD_PRELOAD dbus-run-session -- dh_auto_test -- --timeout-multiplier 6
-endif
 
 override_dh_gnome_clean:
