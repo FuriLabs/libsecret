@@ -1,6 +1,16 @@
 libsecret (0.21.4-1) UNRELEASED; urgency=medium
 
   * New upstream release
+    - 0.21.3
+      + Port PAM module from gnome-keyring
+        https://gitlab.gnome.org/GNOME/libsecret/-/merge_requests/128
+      + secret-tool: Fix memory issues in lock command
+        https://gitlab.gnome.org/GNOME/libsecret/-/merge_requests/134
+    - 0.21.4
+      + file-backend: Subscribe before calling dbus
+        https://gitlab.gnome.org/GNOME/libsecret/-/merge_requests/138
+      + meson: Fix crypto option being silently ignored
+        https://gitlab.gnome.org/GNOME/libsecret/-/merge_requests/137
 
  -- Amin Bandali <bandali@ubuntu.com>  Tue, 27 Feb 2024 12:32:13 -0500
 
