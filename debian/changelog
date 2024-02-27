@@ -1,3 +1,9 @@
+libsecret (0.21.4-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Amin Bandali <bandali@ubuntu.com>  Tue, 27 Feb 2024 12:32:13 -0500
+
 libsecret (0.21.2-1) unstable; urgency=medium
 
   * New upstream release
