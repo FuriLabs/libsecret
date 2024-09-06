@@ -17,7 +17,7 @@ Build-Depends: debhelper-compat (= 13),
                python3-dbus <!nocheck>,
                python3-gi <!nocheck>,
                dbus <!nocheck>,
-               gjs [amd64 arm64 armel armhf i386 mips64el mipsel ppc64el riscv64 s390x] <!nocheck>
+               gjs [amd64 arm64 armhf i386 mips64el mipsel ppc64el riscv64 s390x] <!nocheck>
 Rules-Requires-Root: no
 Standards-Version: 4.6.2
 Vcs-Browser: https://salsa.debian.org/gnome-team/libsecret
