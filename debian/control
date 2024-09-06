@@ -31,7 +31,9 @@ Depends: libsecret-1-0 (= ${binary:Version}),
          gir1.2-secret-1 (= ${binary:Version}),
          libgcrypt20-dev (>= 1.2.2),
          libglib2.0-dev (>= 2.44.0),
+         ${gir:Depends},
          ${misc:Depends}
+Provides: ${gir:Provides}
 Multi-Arch: same
 Description: Secret store (development files)
  Library for storing and retrieving passwords and other secrets.
