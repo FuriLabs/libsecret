@@ -1,3 +1,13 @@
+libsecret (0.21.4-2) UNRELEASED; urgency=medium
+
+  * Remove armel from the list of architectures that can run gjs tests
+    (Helps: #1080521)
+  * Standards-Version: 4.7.0 (no changes required)
+  * d/control: Add ${gir:Depends}, ${gir:Provides} to -dev package
+  * Register API documentation with doc-base and devhelp
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 06 Sep 2024 19:42:01 +0100
+
 libsecret (0.21.4-1) unstable; urgency=medium
 
   * Team upload
