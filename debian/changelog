@@ -1,3 +1,9 @@
+libsecret (0.21.6-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 16 Jan 2025 12:06:54 -0500
+
 libsecret (0.21.4-3) unstable; urgency=medium
 
   * Remove i386 from the list of architectures that can run gjs tests
