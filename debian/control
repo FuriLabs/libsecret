@@ -69,6 +69,8 @@ Package: libsecret-tools
 Section: admin
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
+Breaks: bash-completion (<< 1:2.16.0-7~)
+Replaces: bash-completion (<< 1:2.16.0-7~)
 Multi-Arch: foreign
 Description: tool for storing and retrieving GObject passwords
  This package provides a command line tool using libsecret to access
