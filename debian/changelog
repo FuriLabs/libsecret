@@ -1,3 +1,10 @@
+libsecret (0.21.6-3) unstable; urgency=medium
+
+  * Have libsecret-tools install its own bash-completion again
+  * Add Breaks/Replaces against old bash-completion (Closes: #1093258)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 27 Jan 2025 08:06:04 -0500
+
 libsecret (0.21.6-2) unstable; urgency=medium
 
   * Remove bash completion files that conflict with those provided
