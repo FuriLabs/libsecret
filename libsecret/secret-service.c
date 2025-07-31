@@ -124,6 +124,9 @@ struct _SecretServicePrivate {
 	GMutex mutex;
 	gpointer session;
 	GHashTable *collections;
+
+	GThread *signal_thread;
+	gpointer signal_watch_data;
 };
 
 G_LOCK_DEFINE (service_instance);
@@ -241,6 +244,9 @@ secret_service_init (SecretService *self)
 
 	g_mutex_init (&self->pv->mutex);
 	self->pv->cancellable = g_cancellable_new ();
+
+	self->pv->signal_thread = NULL;
+	self->pv->signal_watch_data = NULL;
 }
 
 static void
@@ -292,10 +298,34 @@ secret_service_dispose (GObject *obj)
 	G_OBJECT_CLASS (secret_service_parent_class)->dispose (obj);
 }
 
+typedef struct {
+	SecretService *service;
+	GMainLoop *loop;
+	guint watch_id;
+} SignalWatchData;
+
+static void
+signal_watch_data_free (SignalWatchData *data)
+{
+	if (data->loop)
+		g_main_loop_unref (data->loop);
+	g_free (data);
+}
+
 static void
 secret_service_finalize (GObject *obj)
 {
 	SecretService *self = SECRET_SERVICE (obj);
+
+	if (self->pv->signal_watch_data) {
+		SignalWatchData *watch_data = (SignalWatchData*)self->pv->signal_watch_data;
+		if (watch_data->loop)
+			g_main_loop_quit (watch_data->loop);
+	}
+	if (self->pv->signal_thread)
+		g_thread_join (self->pv->signal_thread);
+	if (self->pv->signal_watch_data)
+		signal_watch_data_free ((SignalWatchData*)self->pv->signal_watch_data);
 
 	_secret_session_free (self->pv->session);
 	if (self->pv->collections)
@@ -533,6 +563,65 @@ get_default_bus_name (void)
 	return bus_name;
 }
 
+static void
+on_secret_service_name_owner_changed (GDBusConnection *connection,
+                                      const gchar     *sender_name,
+                                      const gchar     *object_path,
+                                      const gchar     *interface_name,
+                                      const gchar     *signal_name,
+                                      GVariant        *parameters,
+                                      gpointer         user_data)
+{
+	SecretService *self = SECRET_SERVICE (user_data);
+	const gchar *name, *old_owner, *new_owner;
+
+	g_variant_get (parameters, "(&s&s&s)", &name, &old_owner, &new_owner);
+
+	if (!g_str_equal (name, get_default_bus_name ()))
+		return;
+
+	if (old_owner[0] != '\0' && new_owner[0] == '\0') {
+		g_debug ("Secret Service disappeared, clearing cached state");
+
+		g_mutex_lock (&self->pv->mutex);
+
+		if (self->pv->session) {
+			_secret_session_free (self->pv->session);
+			self->pv->session = NULL;
+			g_debug ("Cleared cached session");
+		}
+
+		if (self->pv->collections) {
+			g_hash_table_unref (self->pv->collections);
+			self->pv->collections = NULL;
+			g_debug ("Cleared cached collections");
+		}
+
+		g_mutex_unlock (&self->pv->mutex);
+		g_dbus_proxy_set_cached_property (G_DBUS_PROXY (self), "Collections", NULL);
+		g_object_notify (G_OBJECT (self), "collections");
+	} else if (old_owner[0] == '\0' && new_owner[0] != '\0') {
+		g_debug ("Secret Service reappeared with new unique name, invalidating proxy instance");
+
+		/* The proxy is permanently tied to the old unique name (e.g. :1.126)
+		 * but the new service has a different unique name (e.g. :1.128).
+		 * GDBusProxy cannot handle this transition automatically.
+		 *
+		 * The cleanest solution is to invalidate this proxy instance so that
+		 * the next time the application needs the service, it will create a
+		 * fresh proxy that will connect to the new service instance.
+		 */
+
+		/* Remove this instance from the global cache so new requests create a fresh proxy */
+		service_uncache_instance (self);
+
+		g_debug ("Proxy instance invalidated");
+	} else {
+		g_debug ("Service owner changed but didn't disappear: old='%s', new='%s'",
+		         old_owner, new_owner);
+	}
+}
+
 static GObject *
 secret_service_constructor (GType type,
                             guint n_construct_properties,
@@ -733,6 +822,52 @@ typedef struct {
 	gpointer user_data;
 } InitBaseClosure;
 
+static gpointer
+signal_watch_thread (gpointer user_data)
+{
+	SignalWatchData *data = user_data;
+	GDBusConnection *connection;
+	GMainContext *context;
+	GError *error = NULL;
+
+	context = g_main_context_new ();
+	data->loop = g_main_loop_new (context, FALSE);
+
+	g_main_context_push_thread_default (context);
+
+	connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+	if (error) {
+		g_debug ("Failed to get bus connection in signal thread: %s", error->message);
+		g_error_free (error);
+		g_main_context_pop_thread_default (context);
+		return NULL;
+	}
+
+	data->watch_id = g_dbus_connection_signal_subscribe (
+		connection,
+		NULL,
+		"org.freedesktop.DBus",
+		"NameOwnerChanged",
+		"/org/freedesktop/DBus",
+		NULL,
+		G_DBUS_SIGNAL_FLAGS_NONE,
+		on_secret_service_name_owner_changed,
+		data->service,
+		NULL);
+
+	g_debug ("Signal watch thread: subscribed with ID %u", data->watch_id);
+
+	g_main_loop_run (data->loop);
+	if (data->watch_id > 0)
+		g_dbus_connection_signal_unsubscribe (connection, data->watch_id);
+	g_object_unref (connection);
+
+	g_main_context_pop_thread_default (context);
+	g_main_context_unref (context);
+
+	return NULL;
+}
+
 static void
 on_init_base (GObject *source,
               GAsyncResult *result,
@@ -757,6 +892,16 @@ on_init_base (GObject *source,
 	                                                              result, &error)) {
 		g_task_return_error (task, g_steal_pointer (&error));
 	} else {
+		SignalWatchData *watch_data = g_new0 (SignalWatchData, 1);
+		watch_data->service = self;
+
+		GThread *signal_thread = g_thread_new ("secret-signal-watch",
+						       signal_watch_thread,
+						       watch_data);
+
+		self->pv->signal_thread = signal_thread;
+		self->pv->signal_watch_data = watch_data;
+
 		service_ensure_for_flags_async (self, self->pv->init_flags, task);
 	}
 
