@@ -9,6 +9,7 @@ Uploaders: Emilio Pozuelo Monfort <pochu@debian.org>,
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gir,
                dh-sequence-gnome,
+               docbook-xsl <!nodoc>,
                bash-completion,
                dbus <!nocheck>,
                gi-docgen,
@@ -23,7 +24,8 @@ Build-Depends: debhelper-compat (= 13),
                meson (>= 0.50.),
                python3-dbus <!nocheck>,
                python3-gi <!nocheck>,
-               valac (>= 0.17.2.12)
+               valac (>= 0.17.2.12),
+               xsltproc <!nodoc>,
 Standards-Version: 4.7.2
 Vcs-Browser: https://salsa.debian.org/gnome-team/libsecret
 Vcs-Git: https://salsa.debian.org/gnome-team/libsecret.git
