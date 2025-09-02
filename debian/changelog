@@ -1,3 +1,27 @@
+libsecret (0.21.7-2) UNRELEASED; urgency=medium
+
+  * d/control: Build-Depend on required gir1.2-*-dev packages
+  * d/control: Replace libgirepository1.0-dev B-D with
+    gobject-introspection
+  * d/control: Build-Depend on docbook-xsl and xsltproc.
+    These are needed to build the man page. They were previously pulled
+    in by gtk-doc-tools, but that's no longer used.
+  * d/control: Drop obsolete B-D on gtk-doc-tools and libglib2.0-doc.
+    The build option is still called gtk_doc, but it now controls whether
+    gi-docgen is used.
+  * Move API documentation up a level, from
+    /usr/share/doc/libsecret-1-dev/html/libsecret-1 to
+    /usr/share/doc/libsecret-1-dev/libsecret-1. This lets us install it
+    via *.docs rather than *.install, making the <!nodoc> build profile
+    easier to implement.
+  * d/control, d/rules: Implement the <!nodoc> build profile,
+    allowing builds without man pages and gi-docgen
+  * d/copyright: Don't quote the FSF's former postal address here
+  * d/control: Remove Rules-Requires-Root, unnecessary since trixie
+  * d/control: Standards-Version: 4.7.2 (no changes required)
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 03 Sep 2025 00:24:40 +0100
+
 libsecret (0.21.7-1) unstable; urgency=medium
 
   * New upstream release
